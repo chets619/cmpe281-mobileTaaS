@@ -70,3 +70,9 @@ export const handleSignup = (req) => {
         });
     }
 }
+
+export const handleLogout = () => {
+    return {
+        type: "LOGOUT"
+    }
+}
