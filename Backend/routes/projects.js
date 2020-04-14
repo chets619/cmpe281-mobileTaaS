@@ -43,7 +43,7 @@ router.post('/addProject', checkAuth, (req, res) => {
             res.send({ success: false, error: error });
         }
         else {
-            res.send({ success: true, msg: "Project Added Successfully!" });
+            res.send({ success: true, project: data });
         }
     });
 });

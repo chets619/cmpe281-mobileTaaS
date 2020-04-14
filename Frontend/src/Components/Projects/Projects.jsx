@@ -252,7 +252,7 @@ class Projects extends Component {
 
                     <div className="col-sm-12 p-0 project-list mt-4">
                         {/* {projects} */}
-                        {projects.length && projects || <h5>You do not have any projects</h5>}
+                        {projects || <h5>You do not have any projects</h5>}
                         <div className={sessionStorage.getItem("type") === "Tester" ? "avail-proj" : "hidden"}>
                             <br />
                             <hr />

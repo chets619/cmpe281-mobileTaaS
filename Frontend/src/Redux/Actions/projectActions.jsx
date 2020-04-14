@@ -14,7 +14,7 @@ export const getProjects = (data) => {
                     payload: data.projects
                 });
             }
-        }).catch(err => alert("Some Error Occurred!"));
+        }).catch(err => alert(err));
     }
 }
 
@@ -31,7 +31,7 @@ export const getTestersForProjects = (id) => {
                     payload: data.testers
                 });
             }
-        }).catch(err => alert("Some Error Occurred!"));
+        }).catch(err => alert(err));
     }
 }
 
@@ -41,13 +41,13 @@ export const addProject = (data) => {
         Axios.post(configs.connect + '/projects/addProject', data).then((response) => {
             if (response.data.success) {
                 dispatch({
-                    type: "SET_PROJECTS",
-                    payload: response.data.projects
+                    type: "ADD_PROJECT",
+                    payload: response.data.project
                 });
             } else {
                 alert(response.data.error);
             }
-        }).catch(err => alert("Some Error Occurred!"));
+        }).catch(err => alert(err));
     }
 }
 

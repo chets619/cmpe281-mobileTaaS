@@ -13,6 +13,13 @@ const projectReducer = (state = initialState, action) => {
             };
         }
 
+        case "ADD_PROJECT": {
+            return {
+                ...state,
+                projects: [...state.projects, action.payload]
+            };
+        }
+
         case "ADD_TESTER":
         case "SET_TESTERS": {
             return {
