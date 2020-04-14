@@ -10,7 +10,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import { handleLogin } from '../../Redux/Actions/registerActions';
+import { handleLogin, handleLogout } from '../../Redux/Actions/registerActions';
 import { connect } from 'react-redux';
 
 class Navbar extends Component {
@@ -24,7 +24,7 @@ class Navbar extends Component {
 
     onLogout = e => {
         sessionStorage.clear();
-
+        this.props.handleLogout();
         this.props.history.push("/");
     };
 
@@ -229,7 +229,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleLogin: (data) => dispatch(handleLogin(data))
+        handleLogin: (data) => dispatch(handleLogin(data)),
+        handleLogout: () => dispatch(handleLogout()),
     }
 }
 
