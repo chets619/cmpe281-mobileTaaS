@@ -1,0 +1,15 @@
+.project-list {
+    .event-container {
+        flex-direction: row;
+        .chartline {
+            font-size: 3rem;
+        }
+        .detail {
+            justify-content: space-between;
+        }
+    }
+}
+.s-container {
+    padding: 15px;
+    flex-direction: row;
+}

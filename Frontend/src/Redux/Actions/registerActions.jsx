@@ -10,7 +10,7 @@ export const handleLogin = (req) => {
         let data = {
             email: req.email,
             password: req.password,
-            category: req.category
+            category: req.category.replace(/^./, req.category[0].toUpperCase())
         };
         Axios.post(configs.connect + "/user/signin", data).then(response => {
             console.log(response);
@@ -29,7 +29,7 @@ export const handleLogin = (req) => {
                 // else
                 //     dispatch(companyProfile(state.email));
 
-                // dispatch(push({ pathname: '/' + (state.category == 'student' ? 'jobs' : 'postings'), state: { email: state.email, isEditable: true } }));
+                dispatch(push({ pathname: '/dashboard' }));
             } else {
                 alert(response.data.error);
             }
@@ -62,7 +62,7 @@ export const handleSignup = (req) => {
                 dispatch(push('/'));
 
             } else {
-                alert(response.error);
+                alert(response.data.error);
             }
 
         }).catch(err => {

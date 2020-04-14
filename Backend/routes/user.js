@@ -5,12 +5,14 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { secret } = require('../config');
+const { auth } = require("../passport");
+auth();
+
 
 router.post('/signup', (req, res) => {
     console.log("POST signup: " + JSON.stringify(req.body));
 
     User.findOne({ email: req.body.email }, (error, student) => {
-        console.log("asd" + student)
         if (error) {
             res.send({ success: false, error: error });
         }
@@ -42,7 +44,7 @@ router.post('/signup', (req, res) => {
 });
 
 router.post('/signin', (req, res) => {
-    User.findOne({ email: req.body.email }, (error, user) => {
+    User.findOne({ email: req.body.email, type: req.body.category }, (error, user) => {
         if (error) {
             res.send({ success: false, error: error });
         }
@@ -61,7 +63,7 @@ router.post('/signin', (req, res) => {
 
         }
         else {
-            callback(null, { success: false, error: "Invalid Credentials" });
+            res.status(200).send({ success: false, error: "Invalid Credentials" });
         }
     });
 });

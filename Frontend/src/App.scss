@@ -16,7 +16,14 @@ $horizontalGradient: linear-gradient(90deg, rgba(6,225,205,1) 0%, rgba(21,193,21
 }
 
 .main-wrapper {
+  padding: 30px 15px;
   overflow: hidden;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 svg {

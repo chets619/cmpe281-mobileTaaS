@@ -19,7 +19,7 @@ class Navbar extends Component {
         activeTab: 0,
         loginModal: false,
         fail: false,
-        category: "tester"
+        category: "Tester"
     };
 
     onLogout = e => {
@@ -66,59 +66,35 @@ class Navbar extends Component {
     }
 
     render() {
-        let studentTabs = [{
-            path: '/jobs',
-            text: 'Jobs'
+        let testerTabs = [{
+            path: '/dashboard',
+            text: 'Dashboard'
         },
         {
-            path: '/applications',
-            text: 'Applications'
+            path: '/runner',
+            text: 'Runner'
         },
         {
-            path: '/events',
-            text: 'Events'
-        },
-        {
-            path: '/studentlist',
-            text: 'Students'
-        },
-        {
-            path: '/chat',
-            text: 'Messages'
-        },
-        {
-            special: true,
-            path: '/student/dashboard',
-            text: 'Profile',
-            state: { email: sessionStorage.getItem("useremail"), isEditable: false }
+            path: '/projects',
+            text: 'Projects'
         }];
 
         let companyTabs = [{
-            path: '/postings',
-            text: 'Posting'
+            path: '/dashboard',
+            text: 'Dashboard'
         },
         {
-            path: '/eventlist',
-            text: 'Events'
+            path: '/runner',
+            text: 'Runner'
         },
         {
-            path: '/studentlist',
-            text: 'Students'
-        },
-        {
-            path: '/chat',
-            text: 'Messages'
-        },
-        {
-            special: true,
-            path: '/company/dashboard',
-            text: 'Profile',
-            state: { email: sessionStorage.getItem("useremail"), isEditable: false }
+            path: '/projects',
+            text: 'Projects'
         }];
 
         let tabs =
             <React.Fragment>
-                {this.generateTabs(sessionStorage.getItem("type") !== null && sessionStorage.getItem("type") === "student" ? studentTabs : companyTabs)}
+                {this.generateTabs(sessionStorage.getItem("type") !== null && sessionStorage.getItem("type") === "tester" ? testerTabs : companyTabs)}
             </React.Fragment>;
 
         let login = sessionStorage.getItem("useremail") == null ?
@@ -199,23 +175,23 @@ class Navbar extends Component {
                                 <Form.Check
                                     custom
                                     inline
-                                    checked={this.state.category === "tester"}
+                                    checked={this.state.category === "Tester"}
                                     name="type"
                                     label="Tester"
                                     type="radio"
                                     id={`tester-radio`}
-                                    value="tester"
+                                    value="Tester"
                                     onChange={e => this.changeLoginType(e.target.value)}
                                 />
                                 <Form.Check
                                     custom
                                     inline
-                                    checked={this.state.category === "manager"}
+                                    checked={this.state.category === "Manager"}
                                     name="type"
                                     label="Manager"
                                     type="radio"
                                     id={`manager-radio`}
-                                    value="manager"
+                                    value="Manager"
                                     onChange={e => this.changeLoginType(e.target.value)}
                                 />
                             </div>
