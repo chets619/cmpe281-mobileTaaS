@@ -6,7 +6,7 @@ export const getProjects = (data) => {
     return (dispatch) => {
         console.log('data', data)
         Axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
-        Axios.get(configs.connect + '/projects/getProjects/' + data.type + '/' + data.email).then((response) => {
+        Axios.get(configs.connect + '/projects/getProjects/' + data.type + '/' + data.email + '/' + data.id).then((response) => {
             let data = response.data;
             if (data.success) {
                 dispatch({
@@ -64,11 +64,19 @@ export const addTester = (id, tester_id) => {
             if (response.data.success) {
                 dispatch({
                     type: "ADD_TESTER",
-                    payload: response.data.tester
+                    payload: response.data.result
                 });
+                alert("Successfully Applied!")
             } else {
                 alert(response.data.error);
             }
-        }).catch(err => alert("Some Error Occurred!"));
+        }).catch(err => alert(err));
     }
+}
+
+export const setCurrentProject = (data) => {
+    return {
+        type: "SET_CURRENT_PROJECT",
+        payload: data
+    };
 }

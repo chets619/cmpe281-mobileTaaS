@@ -4,28 +4,49 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Row from "react-bootstrap/Row";
-import { getProjects, addProject, getTestersForProjects, addTester } from '../../Redux/Actions/projectActions';
+import { getProjects, addProject, getTestersForProjects, addTester, setCurrentProject } from '../../Redux/Actions/projectActions';
 import { loadProfile } from '../../Redux/Actions/profileActions';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEnvelopeOpenText, faMobileAlt, faChartLine, faUser } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-bootstrap/Modal';
 import "../../Styles/Project.scss";
+import Axios from "axios";
+import configs from "../../config";
 
 class Projects extends Component {
     state = {
         addModal: false,
-        testerModal: false
+        testerModal: false,
+        allProjects: []
     }
 
     componentDidMount = () => {
         if (!this.props.user._id)
             this.props.loadProfile(sessionStorage.getItem("user_id")).then(data => {
-                this.props.getProjects({ email: this.props.user.email, type: this.props.user.type });
+                this.props.getProjects({ email: this.props.user.email, type: this.props.user.type, id: this.props.user._id });
+                this.getAllProjects();
             });
-        else
-            this.props.getProjects({ email: this.props.user.email, type: this.props.user.type });
+        else {
+            this.props.getProjects({ email: this.props.user.email, type: this.props.user.type, id: this.props.user._id });
+            this.getAllProjects();
+        }
 
+    }
+
+    getAllProjects = () => {
+        let data = { email: this.props.user.email, type: this.props.user.type, id: this.props.user._id };
+        Axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
+        Axios.get(configs.connect + '/projects/getAllProjects/' + data.type + '/' + data.email + '/' + data.id).then((response) => {
+            if (response.data.success) {
+                console.log('response.data', response.data)
+                this.setState({
+                    allProjects: response.data.projects
+                });
+            } else {
+                alert(response.data.error);
+            }
+        }).catch(err => alert(err));
     }
 
     modalClose = () => {
@@ -60,6 +81,35 @@ class Projects extends Component {
     }
 
     render() {
+        let allProjects = this.state.allProjects.map((currProject, i) => {
+            return <div className="event-container card flex col-sm-12 p-4 my-2 border border-secondary" key={i}>
+                <div className="col-sm-2 flex">
+                    <FontAwesomeIcon className="chartline" icon={faChartLine} size="lg" />
+                </div>
+                <div className="col-sm-10 flex justify-content-between">
+                    <div className="detail flex flex-column align-items-start">
+                        <h5 className="pointer" onClick={() => {
+                            this.props.setCurrentProject(currProject);
+                            this.props.history.push({
+                                pathname: '/project'
+                            })
+                        }}>{currProject.title}</h5>
+                        <span>{currProject.desc}</span>
+                    </div>
+                    <div>
+                        <Button variant="outline-primary" size="md" onClick={e => {
+                            this.props.setCurrentProject(currProject);
+                            this.props.history.push({
+                                pathname: '/project'
+                            })
+                        }}>View Project</Button>
+                        <Button variant="outline-primary" className="ml-3" onClick={e => this.addTester(currProject._id, sessionStorage.getItem("user_id"))}>Add Tester</Button>
+                    </div>
+                </div>
+
+            </div>
+        });
+
         let testers = this.props.projects.testers.map((tester, i) => {
             return <div className="card s-container flex flex-row col-sm-12" key={i}>
                 <div className="col-sm-2 left flex">
@@ -92,22 +142,27 @@ class Projects extends Component {
         </Modal>;
 
         let projects = this.props.projects.projects && this.props.projects.projects.map((currProject, i) => {
-            return <div className="event-container card flex col-sm-12 p-4 my-2" key={i}>
+            return <div className="event-container card flex col-sm-12 p-4 my-2 border border-secondary" key={i}>
                 <div className="col-sm-2 flex">
                     <FontAwesomeIcon className="chartline" icon={faChartLine} size="lg" />
                 </div>
                 <div className="col-sm-10 flex justify-content-between">
-                    <div className="detail flex flex-column">
-                        <h5>{currProject.title}</h5>
+                    <div className="detail flex flex-column align-items-start">
+                        <h5 className="pointer" onClick={() => {
+                            this.props.setCurrentProject(currProject);
+                            this.props.history.push({
+                                pathname: '/project'
+                            })
+                        }}>{currProject.title}</h5>
                         <span>{currProject.desc}</span>
                     </div>
                     <div>
-                        <Button variant="outline-success" size="md" onClick={e => {
-                            this.props.getTestersForProjects(currProject._id);
-                            this.setState({
-                                testerModal: true
+                        <Button variant="outline-primary" size="md" onClick={e => {
+                            this.props.setCurrentProject(currProject);
+                            this.props.history.push({
+                                pathname: '/project'
                             })
-                        }}>View Testers</Button>
+                        }}>View Project</Button>
                     </div>
                 </div>
 
@@ -183,11 +238,11 @@ class Projects extends Component {
             <React.Fragment>
                 {addModal}
                 {tModal}
-                <div className="projects-wrapper row col-sm-12">
-                    <div className="col-sm-12 card projects-title-wrapper flex flex-row justify-content-between p-2">
+                <div className="projects-wrapper row col-sm-12 card p-4">
+                    <div className="col-sm-12 projects-title-wrapper flex flex-row justify-content-between p-2">
                         <div>
                             <h2>Projects</h2>
-                            <h5>List of all your projects</h5>
+                            <h5>List of all your projects.</h5> Click the button to view more details
                         </div>
                         <div>
                             {sessionStorage.getItem("type") === "Manager" ? <Button variant="success" onClick={e => this.setState({ addModal: true })}><FontAwesomeIcon icon={faPlus} />Add Project</Button> : ""}
@@ -196,7 +251,16 @@ class Projects extends Component {
                     </div>
 
                     <div className="col-sm-12 p-0 project-list mt-4">
-                        {projects || "No Projects Available"}
+                        {/* {projects} */}
+                        {projects.length && projects || <h5>You do not have any projects</h5>}
+                        <div className={sessionStorage.getItem("type") === "Tester" ? "avail-proj" : "hidden"}>
+                            <br />
+                            <hr />
+                            <h3>All Available Projects:</h3>
+                            {
+                                allProjects
+                            }
+                        </div>
                     </div>
                 </div>
             </React.Fragment>
@@ -217,6 +281,7 @@ const mapDispatchToProps = dispatch => {
         addProject: (data) => dispatch(addProject(data)),
         loadProfile: (data) => dispatch(loadProfile(data)),
         getTestersForProjects: (data) => dispatch(getTestersForProjects(data)),
+        setCurrentProject: (data) => dispatch(setCurrentProject(data)),
         addTester: (id, tester_id) => dispatch(addTester(id, tester_id))
 
     }

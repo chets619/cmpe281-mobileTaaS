@@ -8,6 +8,7 @@ import Runner from './Runner/Runner';
 import Projects from './Projects/Projects';
 import { loadProfile } from '../Redux/Actions/profileActions';
 import { connect } from 'react-redux';
+import ProjectView from './ProjectView/ProjectView';
 
 
 class Main extends Component {
@@ -26,6 +27,7 @@ class Main extends Component {
             <div className="">
                 <Navbar></Navbar>
                 <div className="col-sm-9 m-auto main-wrapper">
+                    <Route path="/project" component={ProjectView} />
                     <Route path="/projects" component={Projects} />
                     <Route path="/runner" component={Runner} />
                     <Route path="/dashboard" component={Dashboard} />

@@ -1,6 +1,7 @@
 const initialState = {
     projects: [],
-    testers: []
+    testers: [],
+    currentProject: {}
 };
 
 const projectReducer = (state = initialState, action) => {
@@ -17,6 +18,12 @@ const projectReducer = (state = initialState, action) => {
             return {
                 ...state,
                 testers: [...action.payload]
+            };
+        }
+        case "SET_CURRENT_PROJECT": {
+            return {
+                ...state,
+                currentProject: action.payload
             };
         }
 

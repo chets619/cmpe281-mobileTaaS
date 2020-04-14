@@ -4,11 +4,12 @@ const { checkAuth } = require("../passport");
 const mongoose = require('mongoose');
 const Project = require('../Models/ProjectModel');
 
-router.get('/getProjects/:type/:user_id', checkAuth, (req, res) => {
+router.get('/getProjects/:type/:email/:user_id', checkAuth, (req, res) => {
     console.log('GET projects ', req.params)
 
-    if (req.params.type === "Tester")
-        Project.find({}).populate({
+    if (req.params.type === "Tester") {
+        console.log('req.params.user_id', req.params.user_id)
+        Project.find({ 'testers.id': req.params.user_id }).populate({
             path: 'attendees',
             match: { _id: req.params.user_id }
         }).then(user => {
@@ -18,9 +19,10 @@ router.get('/getProjects/:type/:user_id', checkAuth, (req, res) => {
         }).catch(error => {
             console.log('error', error);
         });
+    }
     else {
 
-        Project.find({ manager: req.params.user_id }).then(user => {
+        Project.find({ manager: req.params.email }).then(user => {
             console.log('user.projects', user)
             res.status(200).send({ success: true, projects: user });
         }).catch(error => {
@@ -46,11 +48,12 @@ router.post('/addProject', checkAuth, (req, res) => {
     });
 });
 
-router.get('/getAllProjects', checkAuth, (req, res) => {
-    console.log('GET projects ')
+router.get('/getAllProjects/:type/:email/:user_id', checkAuth, (req, res) => {
+    console.log('GET projects All')
 
     if (req.params.type === "Tester")
         Project.find({}).then(user => {
+            console.log('projects', user)
             res.status(200).send({ success: true, projects: user });
         }).catch(error => {
             console.log('error', error);
@@ -79,14 +82,14 @@ router.post('/addTester', checkAuth, (req, res) => {
     console.log('POST add tester ' + req.body.p_id)
 
     Project.findById(req.body.p_id).then(async project => {
-        if (project.testers.indexOf(req.body.t_id) > -1) {
+        if (project.testers.find(tester => tester.id == req.body.t_id)) {
             res.send({
                 success: false,
-                error: "Already A Tester"
+                error: "Already Applied"
             });
         }
         else {
-            project.testers.push(req.body.t_id);
+            project.testers.push({ id: req.body.t_id });
             let updated = await project.save();
             console.log('updated', updated)
             res.send({

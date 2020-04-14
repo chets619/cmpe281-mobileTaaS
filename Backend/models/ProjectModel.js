@@ -7,7 +7,10 @@ var projectSchema = new Schema({
     salary: { type: Number, required: true },
     post_date: { type: Date, default: Date.now },
     manager: { type: String },
-    testers: [{ type: Schema.Types.ObjectId, ref: 'user' }],
+    testers: [{
+        id: { type: Schema.Types.ObjectId, ref: 'user' },
+        status: { type: String, default: 'Applied' }
+    }],
     files: [{ type: String }],
     bugs: [{ type: Schema.Types.ObjectId, ref: 'bug' }]
 

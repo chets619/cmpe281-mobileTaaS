@@ -26,6 +26,10 @@ $horizontalGradient: linear-gradient(90deg, rgba(6,225,205,1) 0%, rgba(21,193,21
   justify-content: center;
 }
 
+.hidden {
+  display: none !important;
+}
+
 svg {
   margin-right: 10px;
 }
