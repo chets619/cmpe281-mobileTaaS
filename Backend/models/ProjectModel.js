@@ -17,7 +17,8 @@ var projectSchema = new Schema({
         size: { type: String },
         time: { type: Date, default: Date.now }
     }],
-    bugs: [{ type: Schema.Types.ObjectId, ref: 'bug' }]
+    bugs: [{ type: Schema.Types.ObjectId, ref: 'bug' }],
+    runs: [{ type: Schema.Types.ObjectId, ref: 'testrun' }]
 
 }, {
     versionKey: false

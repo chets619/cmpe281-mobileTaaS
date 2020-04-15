@@ -6,8 +6,10 @@ import { Route, withRouter } from 'react-router-dom';
 import Dashboard from './Dashboard/Dashboard';
 import Projects from './Projects/Projects';
 import { loadProfile } from '../Redux/Actions/profileActions';
+import { getProjects } from '../Redux/Actions/projectActions';
 import { connect } from 'react-redux';
 import ProjectView from './ProjectView/ProjectView';
+import BugTracker from './BugTracker/BugTracker';
 
 
 class Main extends Component {
@@ -16,7 +18,9 @@ class Main extends Component {
     componentDidMount = () => {
 
         if (sessionStorage.getItem("useremail") && !this.props.user) {
-            this.props.loadProfile(sessionStorage.getItem("user_id"));
+            this.props.loadProfile(sessionStorage.getItem("user_id")).then(data => {
+                this.props.getProjects({ email: data.email, type: data.type, id: data._id });
+            });
         }
 
     }
@@ -29,6 +33,7 @@ class Main extends Component {
                     <Route path="/project" component={ProjectView} />
                     <Route path="/projects" component={Projects} />
                     <Route path="/dashboard" component={Dashboard} />
+                    <Route path="/bugtracker" component={BugTracker} />
                     <Route path="/signup" component={Signup} />
                     <Route path="/" exact component={Home} />
                 </div>
@@ -45,6 +50,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         loadProfile: (data) => dispatch(loadProfile(data)),
+        getProjects: (data) => dispatch(getProjects(data))
     }
 }
 

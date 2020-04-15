@@ -61,14 +61,7 @@ var routes = [
     { "route": "/user", "path": 'user' },
     { "route": "/profile", "path": 'profile' },
     { "route": "/projects", "path": 'projects' },
-    // { "route": "/signin", "path": 'signin' },
-    // { "route": "/jobs", "path": 'jobs' },
-    // { "route": "/applications", "path": 'applications' },
-    // { "route": "/events", "path": 'events' },
-    // { "route": "/attendees", "path": 'attendees' },
-    // { "route": "/company", "path": 'companyprofile' },
-    // { "route": "/upload", "path": 'upload' },
-    // { "route": "/chat", "path": 'chat' },
+    { "route": "/bugs", "path": 'bugs' }
 ];
 
 

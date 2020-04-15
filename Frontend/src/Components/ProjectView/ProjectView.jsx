@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Row from "react-bootstrap/Row";
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { faCross, faTrash, faTimes, faCheck, faDownload, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Doughnut } from 'react-chartjs-2';
@@ -283,19 +283,34 @@ class ProjectView extends Component {
                                             <h4>Bug Tracker:</h4>
                                             <Table striped bordered hover>
                                                 <thead>
-                                                    <tr>
-                                                        <th>Title</th>
-                                                        <th>Tester</th>
-                                                        <th>Severity</th>
-                                                        <th>Hardware</th>
-                                                        <th>OS</th>
-                                                        <th>Summary</th>
-                                                        <th>Script</th>
-                                                        <th>Date</th>
-                                                        <th>Action</th>
+                                                    <tr className="row mx-0">
+                                                        <th className="col-sm-5">Title</th>
+                                                        <th className="col-sm-3">Tester</th>
+                                                        <th className="col-sm-2">Severity</th>
+                                                        <th className="col-sm-2">Status</th>
                                                     </tr>
                                                 </thead>
+
+                                                <tbody>
+                                                    {
+                                                        this.props.project.bugs.map((currBug, i) => {
+                                                            return <tr className="row mx-0">
+                                                                <td className="col-sm-5">{currBug.title}</td>
+                                                                <td className="col-sm-3">{currBug.tester.fname + " " + currBug.tester.lname}</td>
+                                                                <td className="col-sm-2">{currBug.severity}</td>
+                                                                <td className="col-sm-2">{currBug.status}</td>
+                                                            </tr>
+                                                        })
+                                                    }
+                                                </tbody>
                                             </Table>
+
+                                            <Link to={{
+                                                pathname: `/bugTracker`,
+                                                state: {
+                                                    id: this.props.project._id
+                                                }
+                                            }} ><Button > Go to Bug Tracker</Button></Link>
                                         </div>
 
                                     </Tab>

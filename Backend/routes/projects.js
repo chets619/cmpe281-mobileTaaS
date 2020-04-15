@@ -8,22 +8,23 @@ router.get('/getProjects/:type/:email/:user_id', checkAuth, (req, res) => {
     console.log('GET projects ', req.params)
 
     if (req.params.type === "Tester") {
-        console.log('req.params.user_id', req.params.user_id)
-        Project.find({ 'testers.id': req.params.user_id }).populate({
-            path: 'attendees',
-            match: { _id: req.params.user_id }
-        }).then(user => {
+        Project.find({ 'testers.id': req.params.user_id }).then(user => {
             console.log('user.projects', user.projects)
             res.status(200).send({ success: true, projects: user });
-
         }).catch(error => {
             console.log('error', error);
         });
     }
     else {
 
-        Project.find({ manager: req.params.email }).then(user => {
-            console.log('user.projects', user)
+        Project.find({ manager: req.params.email }).populate({
+            path: "bugs",
+            populate: {
+                path: "tester",
+                model: "user",
+                select: ["fname", "lname"]
+            }
+        }).then(user => {
             res.status(200).send({ success: true, projects: user });
         }).catch(error => {
             console.log('error', error);
@@ -32,7 +33,6 @@ router.get('/getProjects/:type/:email/:user_id', checkAuth, (req, res) => {
 });
 
 router.post('/addProject', checkAuth, (req, res) => {
-    console.log('add project', { ...req.body });
 
     let project = new Project({
         ...req.body
@@ -68,7 +68,6 @@ router.get('/getAllProjects/:type/:email/:user_id', checkAuth, (req, res) => {
 });
 
 router.get('/getTesters/:id', checkAuth, (req, res) => {
-    console.log('GET testers ' + req.params.id)
 
     Project.findById(req.params.id).populate("testers").then(user => {
         res.status(200).send({ success: true, testers: user.testers });
