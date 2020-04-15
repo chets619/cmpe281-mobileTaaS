@@ -13,3 +13,30 @@
     padding: 15px;
     flex-direction: row;
 }
+
+.project-details-wrapper {
+    svg {
+        margin-right: 0;
+    }
+
+    table {
+        text-align: center;
+    }
+
+    .btn-container .btn{
+        margin: 0 5px;
+    }
+
+    .nav-tabs {        
+        z-index: 99;
+        position: relative;
+        top: 1px;
+    }
+    .tab-content .tab-pane {        
+        border-color: #dee2e6 #dee2e6 #fff;
+    }
+}
+
+.border-left-grey {
+    border-left: solid 1px #ccc;
+}

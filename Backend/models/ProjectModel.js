@@ -11,7 +11,12 @@ var projectSchema = new Schema({
         id: { type: Schema.Types.ObjectId, ref: 'user' },
         status: { type: String, default: 'Applied' }
     }],
-    files: [{ type: String }],
+    files: [{
+        name: { type: String },
+        uploader: { type: Schema.Types.ObjectId, ref: 'user' },
+        size: { type: String },
+        time: { type: Date, default: Date.now }
+    }],
     bugs: [{ type: Schema.Types.ObjectId, ref: 'bug' }]
 
 }, {

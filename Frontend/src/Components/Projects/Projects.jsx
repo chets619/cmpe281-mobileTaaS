@@ -8,7 +8,7 @@ import { getProjects, addProject, getTestersForProjects, addTester, setCurrentPr
 import { loadProfile } from '../../Redux/Actions/profileActions';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faEnvelopeOpenText, faMobileAlt, faChartLine, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEnvelopeOpenText, faMobileAlt, faChartLine, faUser, faClipboard, faClipboardList, faSuitcase } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-bootstrap/Modal';
 import "../../Styles/Project.scss";
 import Axios from "axios";
@@ -143,10 +143,10 @@ class Projects extends Component {
 
         let projects = this.props.projects.projects && this.props.projects.projects.map((currProject, i) => {
             return <div className="event-container card flex col-sm-12 p-4 my-2 border border-secondary" key={i}>
-                <div className="col-sm-2 flex">
-                    <FontAwesomeIcon className="chartline" icon={faChartLine} size="lg" />
+                <div className="col-sm-1 flex">
+                    <FontAwesomeIcon className="chartline" icon={faSuitcase} size="lg" />
                 </div>
-                <div className="col-sm-10 flex justify-content-between">
+                <div className="col-sm-11 flex justify-content-between">
                     <div className="detail flex flex-column align-items-start">
                         <h5 className="pointer" onClick={() => {
                             this.props.setCurrentProject(currProject);
@@ -249,6 +249,7 @@ class Projects extends Component {
 
                         </div>
                     </div>
+                    <hr />
 
                     <div className="col-sm-12 p-0 project-list mt-4">
                         {/* {projects} */}

@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import Navbar from './Navbar/Navbar';
 import Home from './Home/Home';
 import Signup from './Signup/Signup';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import Dashboard from './Dashboard/Dashboard';
-import Runner from './Runner/Runner';
 import Projects from './Projects/Projects';
 import { loadProfile } from '../Redux/Actions/profileActions';
 import { connect } from 'react-redux';
@@ -26,10 +25,9 @@ class Main extends Component {
         return (
             <div className="">
                 <Navbar></Navbar>
-                <div className="col-sm-9 m-auto main-wrapper">
+                <div className={(this.props.location.pathname == '/project' ? "col-sm-11" : "col-sm-9") + " m-auto main-wrapper"}>
                     <Route path="/project" component={ProjectView} />
                     <Route path="/projects" component={Projects} />
-                    <Route path="/runner" component={Runner} />
                     <Route path="/dashboard" component={Dashboard} />
                     <Route path="/signup" component={Signup} />
                     <Route path="/" exact component={Home} />
@@ -50,4 +48,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Main));

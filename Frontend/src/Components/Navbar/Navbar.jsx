@@ -71,12 +71,11 @@ class Navbar extends Component {
             text: 'Dashboard'
         },
         {
-            path: '/runner',
-            text: 'Runner'
-        },
-        {
             path: '/projects',
             text: 'Projects'
+        }, {
+            path: '/profile',
+            text: 'Profile'
         }];
 
         let companyTabs = [{
@@ -84,12 +83,11 @@ class Navbar extends Component {
             text: 'Dashboard'
         },
         {
-            path: '/runner',
-            text: 'Runner'
-        },
-        {
             path: '/projects',
             text: 'Projects'
+        }, {
+            path: '/profile',
+            text: 'Profile'
         }];
 
         let tabs =
