@@ -8,7 +8,14 @@ router.get('/getProjects/:type/:email/:user_id', checkAuth, (req, res) => {
     console.log('GET projects ', req.params)
 
     if (req.params.type === "Tester") {
-        Project.find({ 'testers.id': req.params.user_id }).then(user => {
+        Project.find({ 'testers.id': req.params.user_id }).populate({
+            path: "bugs",
+            populate: {
+                path: "tester",
+                model: "user",
+                select: ["fname", "lname"]
+            }
+        }).then(user => {
             console.log('user.projects', user.projects)
             res.status(200).send({ success: true, projects: user });
         }).catch(error => {
@@ -52,7 +59,14 @@ router.get('/getAllProjects/:type/:email/:user_id', checkAuth, (req, res) => {
     console.log('GET projects All')
 
     if (req.params.type === "Tester")
-        Project.find({}).then(user => {
+        Project.find({}).populate({
+            path: "bugs",
+            populate: {
+                path: "tester",
+                model: "user",
+                select: ["fname", "lname"]
+            }
+        }).then(user => {
             console.log('projects', user)
             res.status(200).send({ success: true, projects: user });
         }).catch(error => {

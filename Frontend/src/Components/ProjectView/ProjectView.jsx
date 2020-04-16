@@ -25,6 +25,12 @@ class ProjectView extends Component {
         if (!this.props.project._id)
             return <Redirect to="/projects" />;
 
+        let bugCount = [0, 0];
+
+        this.props.project.bugs.forEach(bug => {
+            bugCount[bug.status == "Resolved" ? 0 : 1]++;
+        });
+
         return (
             <React.Fragment>
                 <div className="project-details-wrapper card p-3">
@@ -168,7 +174,7 @@ class ProjectView extends Component {
                                             <Doughnut
                                                 data={{
                                                     datasets: [{
-                                                        data: [2, 5],
+                                                        data: bugCount,
                                                         backgroundColor: [
                                                             'Green',
                                                             'red'
@@ -296,7 +302,7 @@ class ProjectView extends Component {
                                                         this.props.project.bugs.map((currBug, i) => {
                                                             return <tr className="row mx-0">
                                                                 <td className="col-sm-5">{currBug.title}</td>
-                                                                <td className="col-sm-3">{currBug.tester.fname + " " + currBug.tester.lname}</td>
+                                                                <td className="col-sm-3">{currBug.tester && currBug.tester.fname + " " + currBug.tester.lname}</td>
                                                                 <td className="col-sm-2">{currBug.severity}</td>
                                                                 <td className="col-sm-2">{currBug.status}</td>
                                                             </tr>

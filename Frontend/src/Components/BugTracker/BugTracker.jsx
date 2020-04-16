@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Row from "react-bootstrap/Row";
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
-import { faCross, faTrash, faTimes, faCheck, faDownload, faTrashAlt, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faCross, faTrash, faTimes, faCheck, faDownload, faTrashAlt, faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Doughnut } from 'react-chartjs-2';
 import Table from 'react-bootstrap/Table'
@@ -22,7 +22,8 @@ class BugTracker extends Component {
         selected: "",
         bugs: [],
         bugModal: false,
-        currBug: {}
+        currBug: {},
+        isCreate: false
     }
 
     componentDidMount = () => {
@@ -49,7 +50,8 @@ class BugTracker extends Component {
 
     closeModal = () => {
         this.setState({
-            bugModal: false
+            bugModal: false,
+            isCreate: false
         });
     }
 
@@ -61,6 +63,28 @@ class BugTracker extends Component {
         Axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
         Axios.post(configs.connect + '/bugs/changeStatus', data).then(response => {
             alert("Update Successful!");
+            this.getBugs();
+            this.closeModal();
+        });
+    }
+
+    addBug = () => {
+        const projId = this.props.location.state && this.props.location.state.id || "";
+        let data = {
+            title: this.state.title,
+            desc: this.state.desc,
+            severity: this.state.severity,
+            hardware: this.state.hardware,
+            os: this.state.os,
+            script: this.state.script,
+            proj_id: projId,
+            tester: sessionStorage.getItem("user_id")
+        };
+
+        console.log(data);
+        Axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
+        Axios.post(configs.connect + '/bugs/addBug', data).then(response => {
+            alert("Added Successfully!");
             this.getBugs();
             this.closeModal();
         });
@@ -85,8 +109,10 @@ class BugTracker extends Component {
                         <Form.Label column sm="4">
                             Title:
                         </Form.Label>
-                        <Col sm="8">
+                        <Col sm="8">{!this.state.isCreate ?
                             <Form.Control plaintext readOnly defaultValue={this.state.currBug.title} />
+                            :
+                            <Form.Control type="text" placeholder="Bug Title" name="title" value={this.state.title} onChange={e => this.setState({ [e.target.name]: e.target.value })} />}
                         </Col>
                     </Form.Group>
 
@@ -95,7 +121,10 @@ class BugTracker extends Component {
                             Description:
                         </Form.Label>
                         <Col sm="8">
-                            <Form.Control plaintext readOnly defaultValue={this.state.currBug.desc} />
+                            {!this.state.isCreate ?
+                                <Form.Control plaintext readOnly defaultValue={this.state.currBug.desc} />
+                                :
+                                <Form.Control type="text" placeholder="Description" name="desc" value={this.state.desc} onChange={e => this.setState({ [e.target.name]: e.target.value })} />}
                         </Col>
                     </Form.Group>
 
@@ -104,7 +133,10 @@ class BugTracker extends Component {
                             Severity:
                         </Form.Label>
                         <Col sm="8">
-                            <Form.Control plaintext readOnly defaultValue={this.state.currBug.severity} />
+                            {!this.state.isCreate ?
+                                <Form.Control plaintext readOnly defaultValue={this.state.currBug.severity} />
+                                :
+                                <Form.Control type="text" placeholder="Severity" name="severity" value={this.state.severity} onChange={e => this.setState({ [e.target.name]: e.target.value })} />}
                         </Col>
                     </Form.Group>
 
@@ -113,7 +145,10 @@ class BugTracker extends Component {
                             Tester:
                         </Form.Label>
                         <Col sm="8">
-                            <Form.Control plaintext readOnly defaultValue={this.state.currBug.tester && this.state.currBug.tester.fname + " " + this.state.currBug.tester.lname} />
+                            {!this.state.isCreate ?
+                                <Form.Control plaintext readOnly defaultValue={this.state.currBug.tester && this.state.currBug.tester.fname + " " + this.state.currBug.tester.lname} />
+                                :
+                                <Form.Control type="text" placeholder="Tester" name="tester" value={this.state.tester} onChange={e => this.setState({ [e.target.name]: e.target.value })} />}
                         </Col>
                     </Form.Group>
 
@@ -122,7 +157,10 @@ class BugTracker extends Component {
                             Hardware:
                         </Form.Label>
                         <Col sm="8">
-                            <Form.Control plaintext readOnly defaultValue={this.state.currBug.hardware} />
+                            {!this.state.isCreate ?
+                                <Form.Control plaintext readOnly defaultValue={this.state.currBug.hardware} />
+                                :
+                                <Form.Control type="text" placeholder="Hardware" name="hardware" value={this.state.hardware} onChange={e => this.setState({ [e.target.name]: e.target.value })} />}
                         </Col>
                     </Form.Group>
 
@@ -131,7 +169,10 @@ class BugTracker extends Component {
                             OS and Version:
                         </Form.Label>
                         <Col sm="8">
-                            <Form.Control plaintext readOnly defaultValue={this.state.currBug.os + " " + this.state.currBug.version} />
+                            {!this.state.isCreate ?
+                                <Form.Control plaintext readOnly defaultValue={this.state.currBug.os + " " + (this.state.currBug.version || "")} />
+                                :
+                                <Form.Control type="text" placeholder="OS" name="os" value={this.state.os} onChange={e => this.setState({ [e.target.name]: e.target.value })} />}
                         </Col>
                     </Form.Group>
 
@@ -140,7 +181,10 @@ class BugTracker extends Component {
                             Script:
                         </Form.Label>
                         <Col sm="8">
-                            <Form.Control plaintext readOnly defaultValue={this.state.currBug.script} />
+                            {!this.state.isCreate ?
+                                <Form.Control plaintext readOnly defaultValue={this.state.currBug.script} />
+                                :
+                                <Form.Control type="text" placeholder="Script" name="script" value={this.state.script} onChange={e => this.setState({ [e.target.name]: e.target.value })} />}
                         </Col>
                     </Form.Group>
 
@@ -149,13 +193,21 @@ class BugTracker extends Component {
                             Status:
                         </Form.Label>
                         <Col sm="8">
-                            <Form.Control plaintext readOnly defaultValue={this.state.currBug.status} />
-                            <Form.Control as="select" onChange={e => this.changeStatus(e.target.value)} value={this.state.currBug.status}>
-                                <option>Resolved</option>
-                                <option>New</option>
-                            </Form.Control>
+                            {!this.state.isCreate ?
+                                <Form.Control as="select" onChange={e => this.changeStatus(e.target.value)} value={this.state.currBug.status}>
+                                    <option>Resolved</option>
+                                    <option>New</option>
+                                </Form.Control>
+                                :
+                                <Form.Control readonly as="select">
+                                    <option>Resolved</option>
+                                    <option selected>New</option>
+                                </Form.Control>}
                         </Col>
                     </Form.Group>
+
+                    {this.state.isCreate ? <Form.Group> <Button className="mx-auto" onClick={this.addBug}>Submit</Button> </Form.Group> : ""}
+
 
 
                 </Form>
@@ -187,6 +239,9 @@ class BugTracker extends Component {
                                 }
                             </Form.Control>
                         </Form.Group> */}
+
+
+                        {sessionStorage.getItem("type") === "Tester" ? <Button variant="success" className="mb-3" onClick={e => this.setState({ bugModal: true, isCreate: true })}><FontAwesomeIcon icon={faPlus} />Add Bug</Button> : ""}
 
 
                         <Table striped bordered hover>
