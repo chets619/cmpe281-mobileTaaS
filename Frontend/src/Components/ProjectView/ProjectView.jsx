@@ -42,7 +42,7 @@ class ProjectView extends Component {
                         <hr />
                     </div>
                     <div className="details-body col-sm-12 row mx-0 mt-3 p-0">
-                        <div className="col-sm-3">
+                        <div className={(sessionStorage.getItem("type") == "Tester" ? "hidden" : "col-sm-3")} >
                             <div className="tester-list">
                                 <h4>Tester List:</h4>
 
@@ -92,7 +92,7 @@ class ProjectView extends Component {
 
                             </div>
                         </div>
-                        <div className="col-sm-9 border-left-grey  pr-0">
+                        <div className={(sessionStorage.getItem("type") == "Tester" ? "col-sm-12" : "col-sm-9") + " border-left-grey  pr-0"}>
                             <div className="statistic-container">
                                 <h4>Statistics:</h4>
                                 <div className="details-body col-sm-12 row mx-0 mt-3">
