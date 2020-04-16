@@ -15,7 +15,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Axios from 'axios';
 import configs from "../../config";
-import Modal from 'react-bootstrap/Modal'
+import Modal from 'react-bootstrap/Modal';
 
 class BugTracker extends Component {
     state = {

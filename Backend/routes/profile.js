@@ -13,4 +13,14 @@ router.get('/getUser/:user_id', checkAuth, (req, res) => {
 
 });
 
+router.post('/update', checkAuth, (req, res) => {
+
+    User.findOneAndUpdate({ _id: req.body.id }, req.body, { new: true }).then(user => {
+        res.status(200).send({ success: true, data: user });
+    }).catch(error => {
+        console.log('error', error);
+    });
+
+});
+
 module.exports = router;
