@@ -34,6 +34,22 @@ const projectReducer = (state = initialState, action) => {
             };
         }
 
+        case "DELETE_TESTER": {
+            state.currentProject.testers = state.currentProject.testers.filter(tester => tester._id !== action.payload.id);
+            return {
+                ...state,
+                currentProject: { ...state.currentProject }
+            }
+        }
+
+        case "ACCEPT_TESTER": {
+            state.currentProject.testers.find(tester => tester._id == action.payload.id).status = "Accepted";
+            return {
+                ...state,
+                currentProject: { ...state.currentProject }
+            }
+        }
+
         case "LOGOUT":
             return initialState;
 

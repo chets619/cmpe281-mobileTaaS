@@ -13,12 +13,44 @@ import Table from 'react-bootstrap/Table'
 import CONSTANTS from '../Constants';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
+import Axios from "axios";
+import configs from "../../config";
+import { deleteTester, acceptTester } from '../../Redux/Actions/projectActions';
+
 
 class ProjectView extends Component {
     state = {}
 
     componentDidMount = () => {
 
+    }
+
+    deleteTester = (id) => {
+        let data = { id: id, proj_id: this.props.project._id };
+
+        Axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
+        Axios.post(configs.connect + '/projects/deleteTester', data).then((response) => {
+            if (response.data.success) {
+                alert("Tester Rejected!");
+                this.props.deleteTester(data);
+            } else {
+                alert(response.data.error);
+            }
+        }).catch(err => alert(err));
+    }
+
+    acceptTester = (id) => {
+        let data = { id: id, proj_id: this.props.project._id };
+
+        Axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
+        Axios.post(configs.connect + '/projects/acceptTester', data).then((response) => {
+            if (response.data.success) {
+                alert("Tester Accepted!");
+                this.props.acceptTester(data);
+            } else {
+                alert(response.data.error);
+            }
+        }).catch(err => alert(err));
     }
 
     render() {
@@ -30,6 +62,13 @@ class ProjectView extends Component {
         this.props.project.bugs.forEach(bug => {
             bugCount[bug.status == "Resolved" ? 0 : 1]++;
         });
+
+        let testerList = {
+            registered: [],
+            requested: []
+        };
+
+        this.props.project.testers.forEach(tester => testerList[tester.status == "Applied" ? "requested" : "registered"].push(tester));
 
         return (
             <React.Fragment>
@@ -46,48 +85,32 @@ class ProjectView extends Component {
                             <div className="tester-list">
                                 <h4>Tester List:</h4>
 
-                                {/* TESTER MAP */}
-                                <div className="tester flex justify-content-between p-2">
-                                    <span>Tester 1</span>
-                                    <Button variant="danger" size="sm"><FontAwesomeIcon icon={faTimes}></FontAwesomeIcon></Button>
-                                </div>
-                                <div className="tester flex justify-content-between p-2">
-                                    <span>Tester 2</span>
-                                    <Button variant="danger" size="sm"><FontAwesomeIcon icon={faTimes}></FontAwesomeIcon></Button>
-                                </div>
-                                <div className="tester flex justify-content-between p-2">
-                                    <span>Tester 3</span>
-                                    <Button variant="danger" size="sm"><FontAwesomeIcon icon={faTimes}></FontAwesomeIcon></Button>
-                                </div>
 
+                                {
+                                    testerList.registered.length ? testerList.registered.map(tester => {
+                                        return <div className="tester flex justify-content-between p-2">
+                                            <span>{tester.id.fname + " " + tester.id.lname}</span>
+                                            <Button variant="danger" size="sm" onClick={e => this.deleteTester(tester._id)}><FontAwesomeIcon icon={faTimes}></FontAwesomeIcon></Button>
+                                        </div>
+                                    }) : "No Testers Registered"
+                                }
 
                             </div>
 
                             <div className="pending-tester-list mt-4">
                                 <h4>Tester Requests:</h4>
 
-                                {/* TESTER MAP */}
-                                <div className="tester flex justify-content-between p-2">
-                                    <span>Tester 4</span>
-                                    <div className="btn-container">
-                                        <Button variant="danger" size="sm"><FontAwesomeIcon icon={faTimes}></FontAwesomeIcon></Button>
-                                        <Button variant="success" size="sm"><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></Button>
-                                    </div>
-                                </div>
-                                <div className="tester flex justify-content-between p-2">
-                                    <span>Tester 5</span>
-                                    <div className="btn-container">
-                                        <Button variant="danger" size="sm"><FontAwesomeIcon icon={faTimes}></FontAwesomeIcon></Button>
-                                        <Button variant="success" size="sm"><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></Button>
-                                    </div>
-                                </div>
-                                <div className="tester flex justify-content-between p-2">
-                                    <span>Tester 6</span>
-                                    <div className="btn-container">
-                                        <Button variant="danger" size="sm"><FontAwesomeIcon icon={faTimes}></FontAwesomeIcon></Button>
-                                        <Button variant="success" size="sm"><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></Button>
-                                    </div>
-                                </div>
+                                {
+                                    testerList.requested.map(tester => {
+                                        return <div className="tester flex justify-content-between p-2">
+                                            <span>{tester.id.fname + " " + tester.id.lname}</span>
+                                            <div className="btn-container">
+                                                <Button variant="danger" size="sm" onClick={e => this.deleteTester(tester._id)}><FontAwesomeIcon icon={faTimes}></FontAwesomeIcon></Button>
+                                                <Button variant="success" size="sm" onClick={e => this.acceptTester(tester._id)}><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></Button>
+                                            </div>
+                                        </div>
+                                    })
+                                }
 
 
                             </div>
@@ -343,6 +366,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        deleteTester: (data) => dispatch(deleteTester(data)),
+        acceptTester: (data) => dispatch(acceptTester(data))
     }
 }
 

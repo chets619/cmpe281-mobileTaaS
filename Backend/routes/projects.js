@@ -5,10 +5,10 @@ const mongoose = require('mongoose');
 const Project = require('../Models/ProjectModel');
 
 router.get('/getProjects/:type/:email/:user_id', checkAuth, (req, res) => {
-    console.log('GET projects ', req.params)
+    console.log('GET projects ')
 
     if (req.params.type === "Tester") {
-        Project.find({ 'testers.id': req.params.user_id }).populate({
+        Project.find({ 'testers.id': req.params.user_id, "testers.status": "Accepted" }).populate({
             path: "bugs",
             populate: {
                 path: "tester",
@@ -16,7 +16,7 @@ router.get('/getProjects/:type/:email/:user_id', checkAuth, (req, res) => {
                 select: ["fname", "lname"]
             }
         }).then(user => {
-            console.log('user.projects', user.projects)
+            user = user.filter(currUser => currUser.status == "Accepted");
             res.status(200).send({ success: true, projects: user });
         }).catch(error => {
             console.log('error', error);
@@ -26,6 +26,13 @@ router.get('/getProjects/:type/:email/:user_id', checkAuth, (req, res) => {
 
         Project.find({ manager: req.params.email }).populate({
             path: "bugs",
+            populate: {
+                path: "tester",
+                model: "user",
+                select: ["fname", "lname"]
+            }
+        }).populate({
+            path: "testers.id",
             populate: {
                 path: "tester",
                 model: "user",
@@ -67,13 +74,19 @@ router.get('/getAllProjects/:type/:email/:user_id', checkAuth, (req, res) => {
                 select: ["fname", "lname"]
             }
         }).then(user => {
-            console.log('projects', user)
             res.status(200).send({ success: true, projects: user });
         }).catch(error => {
             console.log('error', error);
         });
     else {
-        Project.find({ manager: req.params.user_id }).then(user => {
+        Project.find({ manager: req.params.user_id }).populate({
+            path: "testers.id",
+            populate: {
+                path: "tester",
+                model: "user",
+                select: ["fname", "lname"]
+            }
+        }).then(user => {
             res.status(200).send({ success: true, projects: user });
         }).catch(error => {
             console.log('error', error);
@@ -113,6 +126,58 @@ router.post('/addTester', checkAuth, (req, res) => {
     }).catch(error => {
         console.log('error', error);
     });
+});
+
+router.post('/deleteTester', checkAuth, (req, res) => {
+    console.log('delete tester', req.body)
+
+    Project.findById(req.body.proj_id).then(async project => {
+        console.log('project', project.testers)
+
+        if (!project)
+            res.send({
+                success: false,
+                error: "Project Not Found"
+            })
+        else {
+            project.testers = project.testers.filter(tester => tester._id != req.body.id);
+            console.log('project after', project.testers)
+
+            let updated = await project.save();
+
+            res.send({
+                success: true,
+                data: updated
+            })
+        }
+    })
+
+});
+
+router.post('/acceptTester', checkAuth, (req, res) => {
+    console.log('accept tester', req.body)
+
+    Project.findById(req.body.proj_id).then(async project => {
+        console.log('project', project.testers)
+
+        if (!project)
+            res.send({
+                success: false,
+                error: "Project Not Found"
+            })
+        else {
+            project.testers.find(tester => tester._id == req.body.id).status = "Accepted";
+            console.log('project after', project.testers)
+
+            let updated = await project.save();
+
+            res.send({
+                success: true,
+                data: updated
+            })
+        }
+    })
+
 });
 
 

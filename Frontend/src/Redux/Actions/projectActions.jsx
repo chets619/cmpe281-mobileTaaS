@@ -80,3 +80,17 @@ export const setCurrentProject = (data) => {
         payload: data
     };
 }
+
+export const deleteTester = (data) => {
+    return {
+        type: "DELETE_TESTER",
+        payload: data
+    };
+}
+
+export const acceptTester = (data) => {
+    return {
+        type: "ACCEPT_TESTER",
+        payload: data
+    };
+}
