@@ -88,21 +88,10 @@ class Projects extends Component {
                 </div>
                 <div className="col-sm-10 flex justify-content-between">
                     <div className="detail flex flex-column align-items-start">
-                        <h5 className="pointer" onClick={() => {
-                            this.props.setCurrentProject(currProject);
-                            this.props.history.push({
-                                pathname: '/project'
-                            })
-                        }}>{currProject.title}</h5>
+                        <h5 className="pointer" >{currProject.title}</h5>
                         <span>{currProject.desc}</span>
                     </div>
                     <div>
-                        <Button variant="outline-primary" size="md" onClick={e => {
-                            this.props.setCurrentProject(currProject);
-                            this.props.history.push({
-                                pathname: '/project'
-                            })
-                        }}>View Project</Button>
                         <Button variant="outline-primary" className="ml-3" onClick={e => this.addTester(currProject._id, sessionStorage.getItem("user_id"))}>Add Tester</Button>
                     </div>
                 </div>

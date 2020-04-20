@@ -54,10 +54,8 @@ class Home extends Component {
                                 />
                             </div>
                             <div className="lead col-sm-8">
-                                <h2>End-To-End Event Management. Reimagined.</h2>
-                Make your events & conferences more successful than ever before,
-                with Eventify - an event management platform. Discover the
-                advantages of efficient event management.
+                                <h2>Freelance your Testing Projects.</h2>
+                Freelance your testing projects to external experienced training professionals
               </div>
                         </header>
 
@@ -68,10 +66,9 @@ class Home extends Component {
                                         <FontAwesomeIcon icon={faTasks}></FontAwesomeIcon>
                                     </div>
                                     <div className="card-body">
-                                        <h4 className="card-title">Efficient Event Management</h4>
+                                        <h4 className="card-title">Efficient Bug Tracking</h4>
                                         <p className="card-text">
-                                            Managing numerous vendors and speakers participating in
-                                            the events.
+                                            Managing and logging of bugs in your project made easier with our in house tracking tool
                     </p>
                                     </div>
                                 </div>
@@ -84,10 +81,9 @@ class Home extends Component {
                                     </div>
 
                                     <div className="card-body">
-                                        <h4 className="card-title">Track Attendees</h4>
+                                        <h4 className="card-title">Tester Approvals</h4>
                                         <p className="card-text">
-                                            Stay informed about visitor counts, the stalls they are
-                                            visiting, time spent at various keynotes.
+                                            Approve tester requests before they can start working on your project!
                     </p>
                                     </div>
                                 </div>
@@ -99,10 +95,9 @@ class Home extends Component {
                                         <FontAwesomeIcon icon={faFileContract}></FontAwesomeIcon>
                                     </div>
                                     <div className="card-body">
-                                        <h4 className="card-title">Lead Generation</h4>
+                                        <h4 className="card-title">Report Generation</h4>
                                         <p className="card-text">
-                                            Check out visual representations of event attendee
-                                            analytics.
+                                            Get detailed insights and reports about your project on your project page!
                     </p>
                                     </div>
                                 </div>
@@ -116,8 +111,7 @@ class Home extends Component {
                                     <div className="card-body">
                                         <h4 className="card-title">Convenient User Navigation</h4>
                                         <p className="card-text">
-                                            Providing information know about a particular stall to
-                                            attendees without spending much time.
+                                            Simple UI for user simplicity
                     </p>
                                     </div>
                                 </div>
@@ -126,9 +120,8 @@ class Home extends Component {
 
                         <header className="jumbotron flex bottom-jum">
                             <div className="lead col-sm-8">
-                                <h3>Insightful Analytics</h3>
-                Custom-generated, in-depth analytics to track interactions,
-                segregations, and other updates.
+                                <h3>Dynamic Pricing</h3>
+                Experience our dynamic pricing according to your use. Flexible to use and competitive pricing strategies.
               </div>
                             <div className="display-3 col-sm-4">
                                 <img src={require("../../images/analytics.png")} />
@@ -141,8 +134,7 @@ class Home extends Component {
                         <div className="col-sm-3 footer-col">
                             <div className="logo-img"></div>
                             <div className="col-sm-12">
-                                RFID tracking app to track attendees at events and generate
-                                leads.
+                                Mobile Testing app for testing your mobile applications over the cloud
               </div>
                             <div className="icon-app col-sm-12">
                                 <FontAwesomeIcon icon={faFacebook} />
@@ -169,7 +161,7 @@ class Home extends Component {
                             <br />
                             <div>SJSU Campus, San Jose, California - 95126</div>
                             <div>Phone: +1-123-456-7890</div>
-                            <div>Email: help@eventify.com</div>
+                            <div>Email: help@mtaas.com</div>
                         </div>
                     </div>
                 </div>

@@ -8,7 +8,7 @@ router.get('/getProjects/:type/:email/:user_id', checkAuth, (req, res) => {
     console.log('GET projects ')
 
     if (req.params.type === "Tester") {
-        Project.find({ 'testers.id': req.params.user_id, "testers.status": "Accepted" }).populate({
+        Project.find({ 'testers.id': req.params.user_id }).populate({
             path: "bugs",
             populate: {
                 path: "tester",
@@ -16,7 +16,13 @@ router.get('/getProjects/:type/:email/:user_id', checkAuth, (req, res) => {
                 select: ["fname", "lname"]
             }
         }).then(user => {
-            user = user.filter(currUser => currUser.status == "Accepted");
+            user = user.filter(currUser => {
+                let curr = currUser.testers.filter(element => element.status == "Accepted" && element.id == req.params.user_id);
+
+                return curr.length;
+            });
+
+            console.log(user)
             res.status(200).send({ success: true, projects: user });
         }).catch(error => {
             console.log('error', error);
