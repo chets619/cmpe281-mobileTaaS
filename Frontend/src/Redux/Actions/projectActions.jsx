@@ -3,19 +3,21 @@ import configs from "../../config";
 
 export const getProjects = (data) => {
 
-    return (dispatch) => {
-        console.log('data', data)
-        Axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
-        Axios.get(configs.connect + '/projects/getProjects/' + data.type + '/' + data.email + '/' + data.id).then((response) => {
-            let data = response.data;
-            if (data.success) {
-                dispatch({
-                    type: "SET_PROJECTS",
-                    payload: data.projects
-                });
-            }
-        }).catch(err => alert(err));
-    }
+    return (dispatch) =>
+        new Promise((resolve, reject) => {
+            Axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
+            Axios.get(configs.connect + '/projects/getProjects/' + data.type + '/' + data.email + '/' + data.id).then((response) => {
+                let data = response.data;
+                if (data.success) {
+                    dispatch({
+                        type: "SET_PROJECTS",
+                        payload: data.projects
+                    });
+                    resolve(data.projects);
+                }
+            }).catch(err => alert(err));
+        });
+
 }
 
 export const getTestersForProjects = (id) => {

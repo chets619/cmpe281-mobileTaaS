@@ -4,13 +4,52 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Row from "react-bootstrap/Row";
-import { handleSignup } from '../../Redux/Actions/registerActions';
+import { getProjects } from '../../Redux/Actions/projectActions';
 import { connect } from 'react-redux';
 import { Doughnut, Bar, Line } from 'react-chartjs-2';
 import Constants from '../Constants';
+import { loadProfile } from '../../Redux/Actions/profileActions';
 
 class Dashboard extends Component {
-    state = {}
+    state = {
+        bugs: [[], []],
+        projectLabels: [],
+        registeredTesters: []
+    }
+
+    componentDidMount = () => {
+        if (!this.props.user._id)
+            this.props.loadProfile(sessionStorage.getItem("user_id")).then(data => {
+                this.props.getProjects({ email: this.props.user.email, type: this.props.user.type, id: this.props.user._id }).then(data => {
+                    this.processChartInfo();
+                });
+            });
+        else {
+            this.props.getProjects({ email: this.props.user.email, type: this.props.user.type, id: this.props.user._id }).then(data => {
+                this.processChartInfo();
+            });
+        }
+    }
+
+    processChartInfo = () => {
+        console.log(this.props.projects.projects);
+
+        this.props.projects.projects.forEach(currProject => {
+            let solvedBugs = 0, newBugs = 0, testerCount = 0;
+
+            currProject.bugs.forEach(bug => bug.status == "Resolved" ? solvedBugs++ : newBugs++);
+
+            currProject.testers.forEach(tester => tester.status == "Accepted" ? testerCount++ : null);
+
+            this.setState({
+                bugs: [[...this.state.bugs[0], solvedBugs], [...this.state.bugs[1], newBugs]],
+                projectLabels: [...this.state.projectLabels, currProject.title],
+                registeredTesters: [...this.state.registeredTesters, testerCount]
+            });
+        });
+
+    }
+
     render() {
         return (
             <div className="project-details-wrapper card p-4">
@@ -78,11 +117,7 @@ class Dashboard extends Component {
                                             'rgba(255, 99, 132, 0.6)'
                                         ]
                                     }],
-                                    labels: [
-                                        'sample',
-                                        'sample 2',
-                                        'sample 3'
-                                    ]
+                                    labels: this.state.projectLabels
                                 }
                                 }
                                 width={250}
@@ -93,7 +128,7 @@ class Dashboard extends Component {
                                     legend: {
                                         display: false
                                     },
-                                    scales: { yAxes: [{ id: 'y-axis-1', type: 'linear', position: 'left', ticks: { min: 0 } }] }
+                                    scales: { yAxes: [{ id: 'y-axis-1', type: 'linear', position: 'left', ticks: { min: 0, stepSize: 1 } }] }
                                 }}
                             />
                         </div>
@@ -104,20 +139,16 @@ class Dashboard extends Component {
                             <Bar
                                 data={{
                                     datasets: [{
-                                        data: [2, 3, 5],
+                                        data: this.state.bugs[0],
                                         borderColor: 'red',
                                         backgroundColor: 'red',
                                         label: 'New'
                                     }, {
-                                        data: [1, 2, 2],
+                                        data: this.state.bugs[1],
                                         backgroundColor: 'green',
                                         label: 'Resolved'
                                     }],
-                                    labels: [
-                                        'sample',
-                                        'sample 2',
-                                        'sample 3'
-                                    ]
+                                    labels: this.state.projectLabels
                                 }
                                 }
                                 width={250}
@@ -128,7 +159,7 @@ class Dashboard extends Component {
                                     legend: {
                                         position: 'bottom'
                                     },
-                                    scales: { yAxes: [{ id: 'y-axis-1', type: 'linear', position: 'left', ticks: { min: 0 } }] }
+                                    scales: { yAxes: [{ id: 'y-axis-1', type: 'linear', position: 'left', ticks: { min: 0, stepSize: 1 } }] }
                                 }}
                             />
                         </div>
@@ -169,21 +200,17 @@ class Dashboard extends Component {
                         </div>
                     </div>
                     <div className="col-sm-6 mt-5 mx-auto">
-                        <div className="header"><center><h3>No of Testing Documents</h3></center></div>
+                        <div className="header"><center><h3>No of Registered Testers</h3></center></div>
                         <div className="chart">
                             <Bar
                                 data={{
                                     datasets: [{
-                                        data: [2, 1, 3],
+                                        data: this.state.registeredTesters,
                                         borderColor: 'red',
                                         backgroundColor: 'teal',
-                                        label: 'Documents'
+                                        label: 'Testers'
                                     }],
-                                    labels: [
-                                        'sample',
-                                        'sample 2',
-                                        'sample 3'
-                                    ]
+                                    labels: this.state.projectLabels
                                 }
                                 }
                                 width={250}
@@ -194,7 +221,7 @@ class Dashboard extends Component {
                                     legend: {
                                         position: 'bottom'
                                     },
-                                    scales: { yAxes: [{ id: 'y-axis-1', type: 'linear', position: 'left', ticks: { min: 0 } }] }
+                                    scales: { yAxes: [{ id: 'y-axis-1', type: 'linear', position: 'left', ticks: { min: 0, stepSize: 1 } }] }
                                 }}
                             />
                         </div>
@@ -209,12 +236,15 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => {
     return {
+        user: state.user.currentUser,
+        projects: state.projects
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleSignup: (data) => dispatch(handleSignup(data)),
+        loadProfile: (data) => dispatch(loadProfile(data)),
+        getProjects: (data) => dispatch(getProjects(data))
     }
 }
 
