@@ -15,14 +15,19 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Axios from "axios";
 import configs from "../../config";
-import { deleteTester, acceptTester } from '../../Redux/Actions/projectActions';
+import { deleteTester, acceptTester, getFiles } from '../../Redux/Actions/projectActions';
 
 
 class ProjectView extends Component {
     state = {}
 
     componentDidMount = () => {
+        let data = {
+            id: this.props.project._id,
+            name: this.props.user.currentUser.fname
+        }
 
+        this.props.getFiles(data);
     }
 
     deleteTester = (id) => {
@@ -237,35 +242,30 @@ class ProjectView extends Component {
                                                         <th>Uploader</th>
                                                         <th>Time</th>
                                                         <th>Size</th>
-                                                        <th>Delete</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Tester1_Test1</td>
-                                                        <td>Tester 1</td>
-                                                        <td>04/15/2020</td>
-                                                        <td>0.5 MB</td>
-                                                        <td><FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Tester1_Test2</td>
-                                                        <td>Tester 1</td>
-                                                        <td>04/13/2020</td>
-                                                        <td>0.4 MB</td>
-                                                        <td><FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon></td>
+                                                    {
+                                                        this.props.projects.files.map((currFile, i) => {
+                                                            let owner = currFile.file_url.split("/")[currFile.file_url.split("/").length - 2];
 
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Tester2_Test1</td>
-                                                        <td>Tester 2</td>
-                                                        <td>04/14/2020</td>
-                                                        <td>0.6 MB</td>
-                                                        <td><FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon></td>
-
-                                                    </tr>
+                                                            return <tr key={i}>
+                                                                <td>{currFile.key}</td>
+                                                                <td>{owner}</td>
+                                                                <td>{new Date(currFile.modified).toLocaleDateString()}</td>
+                                                                <td>{currFile.size}</td>
+                                                            </tr>
+                                                        })
+                                                    }
                                                 </tbody>
                                             </Table>
+
+                                            <Link to={{
+                                                pathname: `/files`,
+                                                state: {
+                                                    id: this.props.project._id
+                                                }
+                                            }} ><Button > Go to Uploaded Files</Button></Link>
                                         </div>
 
                                     </Tab>
@@ -304,6 +304,13 @@ class ProjectView extends Component {
                                                     </tr>
                                                 </tbody>
                                             </Table>
+
+                                            <Link to={{
+                                                pathname: `/testRuns`,
+                                                state: {
+                                                    id: this.props.project._id
+                                                }
+                                            }} ><Button > Go to Test Run Screen</Button></Link>
                                         </div>
 
                                     </Tab>
@@ -360,13 +367,16 @@ class ProjectView extends Component {
 
 const mapStateToProps = state => {
     return {
-        project: state.projects.currentProject
+        project: state.projects.currentProject,
+        projects: state.projects,
+        user: state.user
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         deleteTester: (data) => dispatch(deleteTester(data)),
+        getFiles: (data) => dispatch(getFiles(data)),
         acceptTester: (data) => dispatch(acceptTester(data))
     }
 }

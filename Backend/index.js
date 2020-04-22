@@ -59,6 +59,7 @@ mongoose.connect(mongoDB, options, (err, res) => {
 app.use(bodyParser.json());
 var routes = [
     { "route": "/user", "path": 'user' },
+    { "route": "/files", "path": 'files' },
     { "route": "/profile", "path": 'profile' },
     { "route": "/projects", "path": 'projects' },
     { "route": "/bugs", "path": 'bugs' }

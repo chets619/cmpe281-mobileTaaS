@@ -1,7 +1,8 @@
 const initialState = {
     projects: [],
     testers: [],
-    currentProject: {}
+    currentProject: {},
+    files: []
 };
 
 const projectReducer = (state = initialState, action) => {
@@ -10,6 +11,13 @@ const projectReducer = (state = initialState, action) => {
             return {
                 ...state,
                 projects: action.payload
+            };
+        }
+
+        case "SET_FILES": {
+            return {
+                ...state,
+                files: action.payload
             };
         }
 

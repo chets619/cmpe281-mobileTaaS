@@ -22,7 +22,6 @@ router.get('/getProjects/:type/:email/:user_id', checkAuth, (req, res) => {
                 return curr.length;
             });
 
-            console.log(user)
             res.status(200).send({ success: true, projects: user });
         }).catch(error => {
             console.log('error', error);
@@ -50,6 +49,28 @@ router.get('/getProjects/:type/:email/:user_id', checkAuth, (req, res) => {
             console.log('error', error);
         });
     }
+});
+
+router.get('/getProject/:id', checkAuth, (req, res) => {
+    Project.findById(req.params.id).populate({
+        path: "bugs",
+        populate: {
+            path: "tester",
+            model: "user",
+            select: ["fname", "lname"]
+        }
+    }).populate({
+        path: "files.uploader",
+        populate: {
+            path: "tester",
+            model: "user",
+            select: ["fname", "lname"]
+        }
+    }).then(user => {
+        res.status(200).send({ success: true, project: user });
+    }).catch(error => {
+        console.log('error', error);
+    });
 });
 
 router.post('/addProject', checkAuth, (req, res) => {

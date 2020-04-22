@@ -11,6 +11,8 @@ import { connect } from 'react-redux';
 import ProjectView from './ProjectView/ProjectView';
 import BugTracker from './BugTracker/BugTracker';
 import UserProfile from './UserProfile/UserProfile';
+import Files from './Files/Files';
+import TestRuns from './TestRuns/TestRuns';
 
 
 class Main extends Component {
@@ -32,6 +34,8 @@ class Main extends Component {
                 <Navbar></Navbar>
                 <div className={(this.props.location.pathname == '/project' ? "col-sm-11" : "col-sm-9") + " m-auto main-wrapper"}>
                     <Route path="/project" component={ProjectView} />
+                    <Route path="/files" component={Files} />
+                    <Route path="/testrun" component={TestRuns} />
                     <Route path="/profile" component={UserProfile} />
                     <Route path="/projects" component={Projects} />
                     <Route path="/dashboard" component={Dashboard} />

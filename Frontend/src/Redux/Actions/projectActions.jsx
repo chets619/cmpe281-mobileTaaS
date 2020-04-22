@@ -76,6 +76,30 @@ export const addTester = (id, tester_id) => {
     }
 }
 
+
+export const getFiles = (data) => {
+    return (dispatch) => {
+        let query = configs.connect + (sessionStorage.getItem("type") == "Manager" ? '/files/getAllFiles/' + data.id : '/files/getTesterFiles/' + data.id + "/" + data.name);
+
+        Axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
+
+        Axios.get(query).then((response) => {
+            let data = response.data;
+            if (data.success) {
+                console.log(data)
+
+                dispatch({
+                    type: "SET_FILES",
+                    payload: data.files
+                });
+            }
+        }).catch(err => alert(err));
+    }
+}
+
+
+
+
 export const setCurrentProject = (data) => {
     return {
         type: "SET_CURRENT_PROJECT",
