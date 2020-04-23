@@ -66,7 +66,7 @@ class Files extends Component {
                                             <td>
                                                 {
                                                     sessionStorage.getItem("type") == "Manager" || owner == this.props.user.currentUser.fname ?
-                                                        <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon> : ""
+                                                        <FontAwesomeIcon icon={faTrashAlt} onClick={e => this.deleteFile(currFile)}></FontAwesomeIcon> : ""
                                                 }
                                             </td>
                                         </tr>
@@ -79,6 +79,30 @@ class Files extends Component {
             </React.Fragment>
 
         );
+    }
+
+    deleteFile = file => {
+        console.log('file', file)
+        let data = {
+            Key: file.file_url.split("amazonaws.com/")[1]
+        }
+
+        Axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
+
+        Axios.post(configs.connect + '/files/deleteFile', data).then((response) => {
+            let data = response.data;
+            if (data.success) {
+                let data = {
+                    id: this.props.project._id,
+                    name: this.props.user.currentUser.fname
+                }
+
+                this.props.getFiles(data);
+                alert("Deleted Successfully")
+            } else {
+                alert(JSON.stringify(data.error))
+            }
+        }).catch(err => alert(err));
     }
 
     uploadFile = e => {

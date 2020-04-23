@@ -116,8 +116,6 @@ router.get('/getTesterFiles/:projectName/:name', checkAuth, (req, res) => {
 
 });
 
-
-
 const upload = multer({
     storage: multerS3({
         s3: s3,
@@ -138,6 +136,21 @@ router.post('/uploadFile/:projId/:folderId', singleUpload, (req, res) => {
     console.log("Upload File: " + req.file.location);
 
     res.status(200).send({ 'success': true, result: { "image": req.file.location } });
+});
+
+
+router.post('/deleteFile', checkAuth, (req, res) => {
+
+    let body = {
+        ...req.body,
+        Bucket: "281-mobiletaas"
+    }
+
+    s3.deleteObject(body, (err, data) => {
+        if (err) res.send({ success: false, error: err });
+        else res.send({ success: true });
+    });
+
 });
 
 module.exports = router;
