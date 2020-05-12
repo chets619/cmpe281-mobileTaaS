@@ -93,9 +93,17 @@ class Navbar extends Component {
             text: 'Billing'
         }];
 
+        let adminTabs = [{
+            path: '/admindashboard',
+            text: 'Admin Dashboard'
+        }, {
+            path: '/adminusers',
+            text: 'Users'
+        }];
+
         let tabs =
             <React.Fragment>
-                {this.generateTabs(sessionStorage.getItem("type") !== null && sessionStorage.getItem("type") === "tester" ? testerTabs : companyTabs)}
+                {this.generateTabs(sessionStorage.getItem("type") !== null && sessionStorage.getItem("type") === "Tester" ? testerTabs : sessionStorage.getItem("type") === "admin" ? adminTabs : companyTabs)}
             </React.Fragment>;
 
         let login = sessionStorage.getItem("useremail") == null ?

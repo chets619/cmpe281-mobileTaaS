@@ -42,9 +42,9 @@ class ProjectView extends Component {
                 alert("Tester Rejected!");
                 this.props.deleteTester(data);
             } else {
-                alert(response.data.error);
+                console.log(response.data.error);
             }
-        }).catch(err => alert(err));
+        }).catch(err => console.log(err));
     }
 
     acceptTester = (id) => {
@@ -56,9 +56,9 @@ class ProjectView extends Component {
                 alert("Tester Accepted!");
                 this.props.acceptTester(data);
             } else {
-                alert(response.data.error);
+                console.log(response.data.error);
             }
-        }).catch(err => alert(err));
+        }).catch(err => console.log(err));
     }
 
     render() {
@@ -359,38 +359,8 @@ class ProjectView extends Component {
                                     <Tab eventKey="emulator" title="Emulators" className="p-2 border border">
                                         <div className="runs-indicator mt-2">
                                             <h4>Emulator Details:</h4>
-                                            <Table striped bordered hover variant="dark">
-                                                <thead>
-                                                    <tr>
-                                                        <th>User</th>
-                                                        <th>RunName</th>
-                                                        <th>TestType</th>
-                                                        <th>Platform</th>
-                                                        <th>RunStatus</th>
-                                                        <th>RunResult</th>
-                                                        <th>Total</th>
-                                                        <th>Passed </th>
-                                                        <th>Failed </th>
-                                                        <th>Errored </th>
-                                                        <th>Other </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Tester 2</td>
-                                                        <td>t2r1</td>
-                                                        <td>APPIUM_NODE</td>
-                                                        <td>Android</td>
-                                                        <td>Completed</td>
-                                                        <td>Completed</td>
-                                                        <td>5</td>
-                                                        <td>4 </td>
-                                                        <td>1 </td>
-                                                        <td>0 </td>
-                                                        <td>0 </td>
-                                                    </tr>
-                                                </tbody>
-                                            </Table>
+
+                                            <div className="my-3">3 Emulators available</div>
 
                                             <Link to={{
                                                 pathname: `/emulator`,

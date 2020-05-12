@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router();
 const { checkAuth } = require("../passport");
-const User = require('../Models/UserModel');
+const User = require('../models/UserModel');
 
 router.get('/getUser/:user_id', (req, res) => {
 
@@ -20,6 +20,32 @@ router.post('/update', checkAuth, (req, res) => {
     }).catch(error => {
         console.log('error', error);
     });
+
+});
+
+router.get('/getAdminUsers', async (req, res) => {
+
+    try {
+        const result = await User.find();
+
+        res.send({ success: true, data: result })
+
+    } catch (error) {
+        res.send(error)
+    }
+
+});
+
+router.post('/deleteUser', async (req, res) => {
+
+    try {
+        const result = await User.findOneAndDelete({ _id: req.body.id });
+
+        res.send({ success: true, data: result })
+
+    } catch (error) {
+        res.send(error)
+    }
 
 });
 

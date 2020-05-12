@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router();
 const { checkAuth } = require("../passport");
-const Project = require('../Models/ProjectModel');
+const Project = require('../models/ProjectModel');
 const AWS = require('aws-sdk');
 const config = require('../config');
 var cors = require('cors');

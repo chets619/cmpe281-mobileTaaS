@@ -14,6 +14,6 @@ export const loadEmulatorProfile = (id) => {
                     });
                     resolve(data.user);
                 }
-            }).catch(err => alert("Some Error Occurred!"));
+            }).catch(err => console.log("Some Error Occurred!"));
         });
 }

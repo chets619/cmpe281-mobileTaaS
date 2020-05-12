@@ -1,8 +1,8 @@
 var express = require('express')
 var router = express.Router();
 const { checkAuth } = require("../passport");
-const Project = require('../Models/ProjectModel');
-const Bug = require('../Models/BugModel');
+const Project = require('../models/ProjectModel');
+const Bug = require('../models/BugModel');
 
 router.get('/getBugs/:proj_id', checkAuth, (req, res) => {
     console.log('get bugs', req.params.proj_id);

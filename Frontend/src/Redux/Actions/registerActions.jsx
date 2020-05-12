@@ -22,18 +22,17 @@ export const handleLogin = (req) => {
                 var decoded = jwt_decode(response.data.token);
                 sessionStorage.setItem("user_id", decoded._id);
                 sessionStorage.setItem("useremail", decoded.email);
-                sessionStorage.setItem("type", req.category);
+                sessionStorage.setItem("type", req.email == "admin" ? "admin" : req.category);
 
-                // if (state.category == 'student')
-                //     dispatch(loadProfile(state.email));
-                // else
-                //     dispatch(companyProfile(state.email));
+                if (req.email == 'admin')
+                    dispatch(push({ pathname: '/admindashboard' }));
+                else
+                    dispatch(push({ pathname: '/dashboard' }));
 
-                dispatch(push({ pathname: '/dashboard' }));
             } else {
-                alert(response.data.error);
+                console.log(response.data.error);
             }
-        }).catch(err => alert(err));
+        }).catch(err => console.log(err));
     }
 }
 
@@ -62,11 +61,11 @@ export const handleSignup = (req) => {
                 dispatch(push('/'));
 
             } else {
-                alert(response.data.error);
+                console.log(response.data.error);
             }
 
         }).catch(err => {
-            alert("Some Error Occurred!");
+            console.log("Some Error Occurred!");
         });
     }
 }

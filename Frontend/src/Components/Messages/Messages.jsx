@@ -35,7 +35,8 @@ class Messages extends Component {
             title: this.state.title,
             desc: this.state.desc,
             sender: this.props.user.currentUser.fname + ' ' + this.props.user.currentUser.lname,
-            project: this.props.project._id
+            project: this.props.project._id,
+            role: sessionStorage.getItem('type')
         };
 
         console.log(data)
@@ -49,9 +50,9 @@ class Messages extends Component {
                     addModal: false
                 })
             } else {
-                alert(response.data.error);
+                console.log(response.data.error);
             }
-        }).catch(err => alert(err));
+        }).catch(err => console.log(err));
 
 
 
@@ -110,8 +111,9 @@ class Messages extends Component {
                                         <h6>{message.title}</h6>
                                         <span>{message.desc}</span>
                                     </div>
-                                    <div className="d-flex align-items-center">
+                                    <div className="d-flex align-items-center flex-column">
                                         <p className="blockquote-footer m-0">{message.sender} - {new Date(message.date).toLocaleDateString()}</p>
+                                        <p className="m-0">{message.role}</p>
                                     </div>
 
                                 </div>

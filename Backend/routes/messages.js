@@ -6,23 +6,35 @@ const Message = require('../models/MessageModel');
 router.get('/getMessages', async (req, res) => {
 
     console.log(req.query);
+    try {
 
-    const result = await Message.find({ project: req.query.project }).sort({ date: -1 });
+        let query = req.query.project ? { project: req.query.project } : {};
 
-    console.log(result);
+        const result = await Message.find(query).sort({ date: -1 });
 
-    res.send({ success: true, result: result });
+        res.send({ success: true, result: result });
+
+    } catch (error) {
+        res.status(400).send(error);
+
+    }
 
 });
 
 router.post('/sendMessage', async (req, res) => {
 
-    console.log(req.body);
+    try {
+        console.log(req.body);
 
-    const msg = new Message({ ...req.body });
-    const result = await msg.save();
+        const msg = new Message({ ...req.body });
+        const result = await msg.save();
 
-    res.send({ success: true, result });
+        res.send({ success: true, result });
+
+    } catch (error) {
+        res.send(400).send(error);
+
+    }
 
 });
 

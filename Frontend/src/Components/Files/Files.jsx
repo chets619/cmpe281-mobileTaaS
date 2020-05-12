@@ -100,9 +100,9 @@ class Files extends Component {
                 this.props.getFiles(data);
                 alert("Deleted Successfully")
             } else {
-                alert(JSON.stringify(data.error))
+                console.log(JSON.stringify(data.error))
             }
-        }).catch(err => alert(err));
+        }).catch(err => console.log(err));
     }
 
     uploadFile = e => {
@@ -125,7 +125,7 @@ class Files extends Component {
                 console.log(data)
                 alert("Uploaded Successfully")
             }
-        }).catch(err => alert(err));
+        }).catch(err => console.log(err));
     };
 }
 

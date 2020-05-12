@@ -44,9 +44,9 @@ class Projects extends Component {
                     allProjects: response.data.projects
                 });
             } else {
-                alert(response.data.error);
+                console.log(response.data.error);
             }
-        }).catch(err => alert(err));
+        }).catch(err => console.log(err));
     }
 
     modalClose = () => {

@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router();
 var fs = require('fs')
 const { checkAuth } = require("../passport");
-const Project = require('../Models/ProjectModel');
+const Project = require('../models/ProjectModel');
 const Run = require('../models/TestRunModel');
 const AWS = require('aws-sdk');
 var Request = require('request');
@@ -72,6 +72,20 @@ router.get('/getAllRuns', (req, res) => {
 
 });
 
+router.get('/getAdminRuns', async (req, res) => {
+
+    try {
+        const result = await Run.find();
+
+        res.send(result);
+
+    } catch (error) {
+        res.status(400).send(error);
+
+    }
+
+});
+
 router.post('/addRun', upload.single('file'), async (req, res) => {
     console.log('req', req.body)
     console.log('req', req.file.path)
@@ -87,7 +101,6 @@ router.post('/addRun', upload.single('file'), async (req, res) => {
     const testPackageFileName = 'zip-with-dependencies.zip'
     const testPackageFileType = req.body.testPackageFileType
 
-    //Amit's array of test file names that need to be zipped
     const testFileNames = JSON.parse(req.body.testFileNames)
 
     const testPackageFile = 'testPackageFile/zip-with-dependencies.zip'

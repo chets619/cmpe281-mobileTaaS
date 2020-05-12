@@ -15,7 +15,7 @@ export const getProjects = (data) => {
                     });
                     resolve(data.projects);
                 }
-            }).catch(err => alert(err));
+            }).catch(err => console.log(err));
         });
 
 }
@@ -33,7 +33,7 @@ export const getTestersForProjects = (id) => {
                     payload: data.testers
                 });
             }
-        }).catch(err => alert(err));
+        }).catch(err => console.log(err));
     }
 }
 
@@ -47,9 +47,9 @@ export const addProject = (data) => {
                     payload: response.data.project
                 });
             } else {
-                alert(response.data.error);
+                console.log(response.data.error);
             }
-        }).catch(err => alert(err));
+        }).catch(err => console.log(err));
     }
 }
 
@@ -70,9 +70,9 @@ export const addTester = (id, tester_id) => {
                 });
                 alert("Successfully Applied!")
             } else {
-                alert(response.data.error);
+                console.log(response.data.error);
             }
-        }).catch(err => alert(err));
+        }).catch(err => console.log(err));
     }
 }
 
@@ -92,7 +92,7 @@ export const getFiles = (data) => {
                     payload: data.files
                 });
             }
-        }).catch(err => alert(err));
+        }).catch(err => console.log(err));
     }
 }
 
@@ -112,7 +112,7 @@ export const getRuns = (data) => {
                     payload: data.runs
                 });
             }
-        }).catch(err => alert(err));
+        }).catch(err => console.log(err));
     }
 }
 
@@ -132,7 +132,7 @@ export const getMessages = (data) => {
                     payload: data.result
                 });
             }
-        }).catch(err => alert(err));
+        }).catch(err => console.log(err));
     }
 }
 

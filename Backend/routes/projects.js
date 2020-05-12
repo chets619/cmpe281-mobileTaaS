@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const { checkAuth } = require("../passport");
 const mongoose = require('mongoose');
-const Project = require('../Models/ProjectModel');
+const Project = require('../models/ProjectModel');
 
 router.get('/getProjects/:type/:email/:user_id', checkAuth, (req, res) => {
     console.log('GET projects ')
@@ -204,6 +204,25 @@ router.post('/acceptTester', checkAuth, (req, res) => {
             })
         }
     })
+
+});
+
+
+
+router.get('/getAdminProjects', async (req, res) => {
+    console.log('admin projects')
+
+    try {
+        const result = await Project.find().populate('bugs').populate('files').populate('testers.id');
+
+        res.send({
+            success: true,
+            data: result
+        });
+
+    } catch (error) {
+        res.send(error)
+    }
 
 });
 

@@ -16,6 +16,9 @@ import TestRuns from './TestRuns/TestRuns';
 import Billing from './Billing/Billing';
 import Emulator from './Emulator/Emulator';
 import Messages from './Messages/Messages';
+import Payment from './Payment/Payment';
+import AdminDashboard from './AdminDashboard/AdminDashboard';
+import AdminUsers from './AdminUsers/AdminUsers';
 
 
 class Main extends Component {
@@ -45,6 +48,9 @@ class Main extends Component {
                     <Route path="/projects" component={Projects} />
                     <Route path="/dashboard" component={Dashboard} />
                     <Route path="/messages" component={Messages} />
+                    <Route path="/payment" component={Payment} />
+                    <Route path="/admindashboard" component={AdminDashboard} />
+                    <Route path="/adminusers" component={AdminUsers} />
                     <Route path="/bugtracker" component={BugTracker} />
                     <Route path="/signup" component={Signup} />
                     <Route path="/" exact component={Home} />
