@@ -13,6 +13,8 @@ import BugTracker from './BugTracker/BugTracker';
 import UserProfile from './UserProfile/UserProfile';
 import Files from './Files/Files';
 import TestRuns from './TestRuns/TestRuns';
+import Billing from './Billing/Billing';
+import Emulator from './Emulator/Emulator';
 
 
 class Main extends Component {
@@ -34,9 +36,11 @@ class Main extends Component {
                 <Navbar></Navbar>
                 <div className={(this.props.location.pathname == '/project' ? "col-sm-11" : "col-sm-9") + " m-auto main-wrapper"}>
                     <Route path="/project" component={ProjectView} />
+                    <Route path="/billing" component={Billing} />
                     <Route path="/files" component={Files} />
                     <Route path="/testrun" component={TestRuns} />
                     <Route path="/profile" component={UserProfile} />
+                    <Route path="/emulator" component={Emulator} />
                     <Route path="/projects" component={Projects} />
                     <Route path="/dashboard" component={Dashboard} />
                     <Route path="/bugtracker" component={BugTracker} />

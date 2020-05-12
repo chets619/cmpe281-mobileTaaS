@@ -41,7 +41,6 @@ router.get('/getAllFiles/:id', checkAuth, (req, res) => {
     }
     // Call S3 to obtain a list of the objects in the bucket
     s3.listObjects(bucketParams, function (err, data) {
-        console.log('data', data)
         if (err) {
             console.log("Error in fetching contents of Bucket: " + err);
             res.status(400).json("Error in fetching contents of Bucket: " + err)

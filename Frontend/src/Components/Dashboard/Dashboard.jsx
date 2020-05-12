@@ -199,36 +199,37 @@ class Dashboard extends Component {
                             />
                         </div>
                     </div>
-                    <div className="col-sm-6 mt-5 mx-auto">
-                        <div className="header"><center><h3>No of Registered Testers</h3></center></div>
-                        <div className="chart">
-                            <Bar
-                                data={{
-                                    datasets: [{
-                                        data: this.state.registeredTesters,
-                                        borderColor: 'red',
-                                        backgroundColor: 'teal',
-                                        label: 'Testers'
-                                    }],
-                                    labels: this.state.projectLabels
-                                }
-                                }
-                                width={250}
-                                height={400}
-                                options={{
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    legend: {
-                                        position: 'bottom'
-                                    },
-                                    scales: { yAxes: [{ id: 'y-axis-1', type: 'linear', position: 'left', ticks: { min: 0, stepSize: 1 } }] }
-                                }}
-                            />
+                    {
+                        sessionStorage.getItem("type") == "Tester" ? "" : <div className="col-sm-6 mt-5 mx-auto">
+                            <div className="header"><center><h3>No of Registered Testers</h3></center></div>
+                            <div className="chart">
+                                <Bar
+                                    data={{
+                                        datasets: [{
+                                            data: this.state.registeredTesters,
+                                            borderColor: 'red',
+                                            backgroundColor: 'teal',
+                                            label: 'Testers'
+                                        }],
+                                        labels: this.state.projectLabels
+                                    }
+                                    }
+                                    width={250}
+                                    height={400}
+                                    options={{
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        legend: {
+                                            position: 'bottom'
+                                        },
+                                        scales: { yAxes: [{ id: 'y-axis-1', type: 'linear', position: 'left', ticks: { min: 0, stepSize: 1 } }] }
+                                    }}
+                                />
+                            </div>
+
                         </div>
 
-
-                    </div>
-
+                    }
                 </div>
             </div>);
     }

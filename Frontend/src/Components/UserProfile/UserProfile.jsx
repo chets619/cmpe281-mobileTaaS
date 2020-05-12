@@ -32,6 +32,7 @@ class UserProfile extends Component {
 
         Axios.post(configs.connect + '/profile/update', data).then(response => {
             console.log(response.data);
+            alert("Updated!");
             this.props.loadProfile(sessionStorage.getItem("user_id"));
         });
     }

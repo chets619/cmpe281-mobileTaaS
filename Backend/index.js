@@ -19,9 +19,10 @@ app.use(session({
     activeDuration: 5 * 60 * 1000
 }));
 
-// app.use(bodyParser.urlencoded({
-//     extended: true
-//   }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 //Allow Access Control
 app.use(function (req, res, next) {
@@ -55,13 +56,13 @@ mongoose.connect(mongoDB, options, (err, res) => {
 
 // ================== Router Config ===========================
 
-
-app.use(bodyParser.json());
 var routes = [
     { "route": "/user", "path": 'user' },
     { "route": "/files", "path": 'files' },
     { "route": "/profile", "path": 'profile' },
     { "route": "/projects", "path": 'projects' },
+    { "route": "/runs", "path": 'runs' },
+    { "route": "/messages", "path": 'messages' },
     { "route": "/bugs", "path": 'bugs' }
 ];
 

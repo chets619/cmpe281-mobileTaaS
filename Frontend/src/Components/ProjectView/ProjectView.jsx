@@ -15,7 +15,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Axios from "axios";
 import configs from "../../config";
-import { deleteTester, acceptTester, getFiles } from '../../Redux/Actions/projectActions';
+import { deleteTester, acceptTester, getFiles, getRuns } from '../../Redux/Actions/projectActions';
 
 
 class ProjectView extends Component {
@@ -24,10 +24,12 @@ class ProjectView extends Component {
     componentDidMount = () => {
         let data = {
             id: this.props.project._id,
-            name: this.props.user.currentUser.fname
+            name: this.props.user.currentUser.fname,
+            proj_name: this.props.project.title
         }
 
         this.props.getFiles(data);
+        this.props.getRuns(data);
     }
 
     deleteTester = (id) => {
@@ -285,28 +287,31 @@ class ProjectView extends Component {
                                                         <th>Passed </th>
                                                         <th>Failed </th>
                                                         <th>Errored </th>
-                                                        <th>Other </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Tester 2</td>
-                                                        <td>t2r1</td>
-                                                        <td>APPIUM_NODE</td>
-                                                        <td>Android</td>
-                                                        <td>Completed</td>
-                                                        <td>Completed</td>
-                                                        <td>5</td>
-                                                        <td>4 </td>
-                                                        <td>1 </td>
-                                                        <td>0 </td>
-                                                        <td>0 </td>
-                                                    </tr>
+                                                    {
+                                                        this.props.projects.runs.map((run, i) => (
+                                                            <tr>
+                                                                <td>{run.userName}</td>
+                                                                <td>{run.name}</td>
+                                                                <td>{run.type}</td>
+                                                                <td>{run.platform}</td>
+                                                                <td>{run.status}</td>
+                                                                <td>{run.result}</td>
+                                                                <td>{run.counters.total}</td>
+                                                                <td>{run.counters.passed} </td>
+                                                                <td>{run.counters.failed} </td>
+                                                                <td>{run.counters.errored} </td>
+                                                            </tr>
+
+                                                        ))
+                                                    }
                                                 </tbody>
                                             </Table>
 
                                             <Link to={{
-                                                pathname: `/testRuns`,
+                                                pathname: `/testRun`,
                                                 state: {
                                                     id: this.props.project._id
                                                 }
@@ -350,6 +355,66 @@ class ProjectView extends Component {
                                         </div>
 
                                     </Tab>
+                                    <Tab eventKey="emulator" title="Emulators" className="p-2 border border">
+                                        <div className="runs-indicator mt-2">
+                                            <h4>Emulator Details:</h4>
+                                            <Table striped bordered hover variant="dark">
+                                                <thead>
+                                                    <tr>
+                                                        <th>User</th>
+                                                        <th>RunName</th>
+                                                        <th>TestType</th>
+                                                        <th>Platform</th>
+                                                        <th>RunStatus</th>
+                                                        <th>RunResult</th>
+                                                        <th>Total</th>
+                                                        <th>Passed </th>
+                                                        <th>Failed </th>
+                                                        <th>Errored </th>
+                                                        <th>Other </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Tester 2</td>
+                                                        <td>t2r1</td>
+                                                        <td>APPIUM_NODE</td>
+                                                        <td>Android</td>
+                                                        <td>Completed</td>
+                                                        <td>Completed</td>
+                                                        <td>5</td>
+                                                        <td>4 </td>
+                                                        <td>1 </td>
+                                                        <td>0 </td>
+                                                        <td>0 </td>
+                                                    </tr>
+                                                </tbody>
+                                            </Table>
+
+                                            <Link to={{
+                                                pathname: `/emulator`,
+                                                state: {
+                                                    id: this.props.project._id
+                                                }
+                                            }} ><Button > Go to Emulator Screen</Button></Link>
+                                        </div>
+
+                                    </Tab>
+                                    <Tab eventKey="messages" title="Messages" className="p-2 border border">
+                                        <div className="runs-indicator mt-2">
+                                            <h4>Project Messages:</h4>
+
+
+
+                                            <Link to={{
+                                                pathname: `/messages`,
+                                                state: {
+                                                    id: this.props.project._id
+                                                }
+                                            }} ><Button > Show All Messages</Button></Link>
+                                        </div>
+
+                                    </Tab>
                                 </Tabs>
                             </div>
 
@@ -377,6 +442,7 @@ const mapDispatchToProps = dispatch => {
     return {
         deleteTester: (data) => dispatch(deleteTester(data)),
         getFiles: (data) => dispatch(getFiles(data)),
+        getRuns: (data) => dispatch(getRuns(data)),
         acceptTester: (data) => dispatch(acceptTester(data))
     }
 }

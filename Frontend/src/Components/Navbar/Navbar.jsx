@@ -88,6 +88,9 @@ class Navbar extends Component {
         }, {
             path: '/profile',
             text: 'Profile'
+        }, {
+            path: '/billing',
+            text: 'Billing'
         }];
 
         let tabs =
