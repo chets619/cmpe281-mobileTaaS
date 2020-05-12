@@ -133,7 +133,7 @@ class ProjectView extends Component {
                                             <Doughnut
                                                 data={{
                                                     datasets: [{
-                                                        data: [2, 7, 5, 4, 5, 7],
+                                                        data: [2, 7, 5, 4],
                                                         backgroundColor: [
                                                             'rgba(255, 99, 132, 0.6)',
                                                             'rgba(255, 206, 86, 0.6)',
@@ -146,11 +146,9 @@ class ProjectView extends Component {
                                                     }],
                                                     labels: [
                                                         CONSTANTS.ANDROID_OPTIONS[0].label,
-                                                        CONSTANTS.IPHONE_OPTIONS[1].label,
                                                         CONSTANTS.ANDROID_OPTIONS[2].label,
                                                         CONSTANTS.ANDROID_OPTIONS[6].label,
                                                         CONSTANTS.ANDROID_OPTIONS[1].label,
-                                                        CONSTANTS.IPHONE_OPTIONS[4].label
                                                     ]
                                                 }
                                                 }
@@ -361,13 +359,15 @@ class ProjectView extends Component {
                                             <h4>Emulator Details:</h4>
 
                                             <div className="my-3">3 Emulators available</div>
+                                            {
+                                                sessionStorage.getItem("type") == "Tester" ? <Link to={{
+                                                    pathname: `/emulator`,
+                                                    state: {
+                                                        id: this.props.project._id
+                                                    }
+                                                }} ><Button > Go to Emulator Screen</Button></Link> : ""
+                                            }
 
-                                            <Link to={{
-                                                pathname: `/emulator`,
-                                                state: {
-                                                    id: this.props.project._id
-                                                }
-                                            }} ><Button > Go to Emulator Screen</Button></Link>
                                         </div>
 
                                     </Tab>

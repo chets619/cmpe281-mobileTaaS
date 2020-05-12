@@ -67,7 +67,7 @@ class Dashboard extends Component {
                             <Doughnut
                                 data={{
                                     datasets: [{
-                                        data: [2, 7, 5, 4, 5, 7],
+                                        data: [2, 7, 5, 4],
                                         backgroundColor: [
                                             'rgba(255, 99, 132, 0.6)',
                                             'rgba(255, 206, 86, 0.6)',
@@ -80,11 +80,9 @@ class Dashboard extends Component {
                                     }],
                                     labels: [
                                         Constants.ANDROID_OPTIONS[0].label,
-                                        Constants.IPHONE_OPTIONS[1].label,
                                         Constants.ANDROID_OPTIONS[2].label,
                                         Constants.ANDROID_OPTIONS[6].label,
-                                        Constants.ANDROID_OPTIONS[1].label,
-                                        Constants.IPHONE_OPTIONS[4].label
+                                        Constants.ANDROID_OPTIONS[1].label
                                     ]
                                 }
                                 }
