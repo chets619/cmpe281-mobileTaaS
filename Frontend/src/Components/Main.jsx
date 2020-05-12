@@ -15,6 +15,7 @@ import Files from './Files/Files';
 import TestRuns from './TestRuns/TestRuns';
 import Billing from './Billing/Billing';
 import Emulator from './Emulator/Emulator';
+import Messages from './Messages/Messages';
 
 
 class Main extends Component {
@@ -43,6 +44,7 @@ class Main extends Component {
                     <Route path="/emulator" component={Emulator} />
                     <Route path="/projects" component={Projects} />
                     <Route path="/dashboard" component={Dashboard} />
+                    <Route path="/messages" component={Messages} />
                     <Route path="/bugtracker" component={BugTracker} />
                     <Route path="/signup" component={Signup} />
                     <Route path="/" exact component={Home} />

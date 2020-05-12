@@ -116,7 +116,33 @@ export const getRuns = (data) => {
     }
 }
 
+export const getMessages = (data) => {
+    return (dispatch) => {
+        let query = configs.connect + '/messages/getMessages?project=' + data.id;
 
+        Axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
+
+        Axios.get(query).then((response) => {
+            let data = response.data;
+            if (data.success) {
+                console.log(data.result)
+
+                dispatch({
+                    type: "SET_MESSAGES",
+                    payload: data.result
+                });
+            }
+        }).catch(err => alert(err));
+    }
+}
+
+export const addMessage = (data) => {
+
+    return {
+        type: "ADD_MESSAGE",
+        payload: data
+    };
+}
 
 
 export const setCurrentProject = (data) => {

@@ -4,6 +4,7 @@ const initialState = {
     currentProject: {},
     files: [],
     runs: [],
+    messages: [],
     OS: ['Android', 'iOS'],
     appFileTypes: ['ANDROID_APP', 'IOS_APP'],
     testTypes: ['BUILTIN_FUZZ', 'BUILTIN_EXPLORER', 'APPIUM_JAVA_JUNIT', 'APPIUM_JAVA_TESTNG', 'APPIUM_PYTHON',
@@ -137,6 +138,25 @@ const projectReducer = (state = initialState, action) => {
             return {
                 ...state,
                 runs: action.payload
+            }
+        }
+
+        case "SET_MESSAGES": {
+            return {
+                ...state,
+                messages: action.payload || []
+            }
+        }
+
+        case "ADD_MESSAGE": {
+            state.messages.push({
+                ...action.payload,
+                date: new Date()
+            });
+
+            return {
+                ...state,
+                messages: [...state.messages]
             }
         }
 

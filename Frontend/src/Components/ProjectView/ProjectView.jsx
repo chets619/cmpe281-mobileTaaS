@@ -15,7 +15,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Axios from "axios";
 import configs from "../../config";
-import { deleteTester, acceptTester, getFiles, getRuns } from '../../Redux/Actions/projectActions';
+import { deleteTester, acceptTester, getFiles, getRuns, getMessages } from '../../Redux/Actions/projectActions';
 
 
 class ProjectView extends Component {
@@ -30,6 +30,7 @@ class ProjectView extends Component {
 
         this.props.getFiles(data);
         this.props.getRuns(data);
+        this.props.getMessages(data);
     }
 
     deleteTester = (id) => {
@@ -404,7 +405,22 @@ class ProjectView extends Component {
                                         <div className="runs-indicator mt-2">
                                             <h4>Project Messages:</h4>
 
+                                            {
+                                                this.props.projects.messages.length ?
+                                                    this.props.projects.messages.slice(0, 5).map((message, i) => (
+                                                        <div className="message d-flex justify-content-between border-info border p-2 m-2">
 
+                                                            <div>
+                                                                <h6>{message.title}</h6>
+                                                                <span>{message.desc}</span>
+                                                            </div>
+                                                            <div className="d-flex align-items-center">
+                                                                <p className="blockquote-footer m-0">{message.sender} - {new Date(message.date).toLocaleDateString()}</p>
+                                                            </div>
+
+                                                        </div>
+                                                    )) : <div className="my-3">No Messages Found</div>
+                                            }
 
                                             <Link to={{
                                                 pathname: `/messages`,
@@ -443,6 +459,7 @@ const mapDispatchToProps = dispatch => {
         deleteTester: (data) => dispatch(deleteTester(data)),
         getFiles: (data) => dispatch(getFiles(data)),
         getRuns: (data) => dispatch(getRuns(data)),
+        getMessages: (data) => dispatch(getMessages(data)),
         acceptTester: (data) => dispatch(acceptTester(data))
     }
 }
